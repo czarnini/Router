@@ -3,6 +3,8 @@ package com.bogucki.router;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,30 +16,41 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
+public class Meetings extends AppCompatActivity
 {
-    private ListView futureMeetings;
+    private ListView meetingsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_meetings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
         String tmp[][] = new String[10][4];
         for (int j = 0; j < 10; ++j)
         {
-            tmp[j][3] = "18:30";
-            tmp[j][2] = "Odbiór zamówienia";
-            tmp[j][1] = "ul. Krucza 5, Warszawa";
-            tmp[j][0] = "Rolex";
+            tmp[j][0] = "Odbiór tony wiórów";
+            tmp[j][1] = "ROMBAPOL POLEX sp. Z.O.O";
+            tmp[j][2] = "ul. Polska 14/10, 01-444 Warszawa";
+            tmp[j][3] = "Najbliższy wolny termin: 09.06.2017 19:00";
         }
-        futureMeetings = (ListView) findViewById(R.id.list_view_future_items);
+        meetingsList = (ListView) findViewById(R.id.meetings_list);
         MyListAdapter listAdapter = new MyListAdapter(this, tmp);
+        meetingsList.setAdapter(listAdapter);
 
-
-        futureMeetings.setAdapter(listAdapter);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
@@ -45,9 +58,9 @@ public class MainActivity extends AppCompatActivity
     {
         switch (item.getItemId())
         {
-            case R.id.meetings_option:
+            case R.id.todays_route_option:
             {
-                Intent intent = new Intent(this, Meetings.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -64,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.meetings, menu);
         return true;
     }
 
@@ -86,19 +99,21 @@ public class MainActivity extends AppCompatActivity
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.future_list_item, parent, false);
-            TextView client = (TextView) rowView.findViewById(R.id.future_client);
-            TextView address = (TextView) rowView.findViewById(R.id.future_address);
-            TextView reason = (TextView) rowView.findViewById(R.id.future_reason);
-            TextView time = (TextView) rowView.findViewById(R.id.future_time);
-            client.setText(values[position][0]);
-            address.setText(values[position][1]);
-            reason.setText(values[position][2]);
-            time.setText(values[position][3]);
+            View rowView = inflater.inflate(R.layout.meeting_list_item, parent, false);
+
+
+            TextView reason = (TextView) rowView.findViewById(R.id.meeting_reason);
+            TextView client = (TextView) rowView.findViewById(R.id.client_address);
+            TextView address = (TextView) rowView.findViewById(R.id.client_address);
+            TextView term = (TextView) rowView.findViewById(R.id.closest_term);
+
+            reason.setText(values[position][0]);
+            client.setText(values[position][1]);
+            address.setText(values[position][2]);
+            term.setText(values[position][3]);
+
             return rowView;
         }
     }
 
 }
-
-
