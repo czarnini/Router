@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Thesis Mock</string>
+    <string name="app_name">Router</string>
     <string name="title_activity_main">Plan dnia</string>
     <string name="title_activity_clients">Klienci</string>
     <string name="title_activity_meetings">Spotkania</string>
