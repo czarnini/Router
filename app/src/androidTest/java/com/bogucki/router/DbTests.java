@@ -15,21 +15,29 @@ import org.junit.Test;
 public class DbTests {
 
     @Test
+    public void testDeletingAndCreating(){
+        boolean isDel = InstrumentationRegistry.getTargetContext().deleteDatabase(dbHelper.DB_NAME);
+        Assert.assertTrue(isDel);
+
+        dbHelper helper = new dbHelper(InstrumentationRegistry.getTargetContext());
+        Assert.assertTrue(helper.getClients().isEmpty());
+    }
+
+    @Test
     public void testAddClient(){
         final long INSERTED_ID        = 100;
         final String INSERTED_NAME    = "NAME";
         final String INSERTED_ADDRESS = "ADDRESS";
-        InstrumentationRegistry.getContext().deleteDatabase(dbHelper.DB_NAME);
         dbHelper helper = new dbHelper(InstrumentationRegistry.getTargetContext());
 
 
 
-        helper.addClient(new ClientEntity(INSERTED_ID+1, INSERTED_NAME, INSERTED_ADDRESS));
+        helper.addClient(new ClientEntity(INSERTED_ID, INSERTED_NAME, INSERTED_ADDRESS));
         ClientEntity insertedClient = helper.getClientById(INSERTED_ID);
 
-        Assert.assertEquals(insertedClient.getId(),      INSERTED_ID);
-        Assert.assertEquals(insertedClient.getName(),    INSERTED_NAME);
-        Assert.assertEquals(insertedClient.getAddress(), INSERTED_ADDRESS);
+        Assert.assertEquals(INSERTED_ID,insertedClient.getId());
+        Assert.assertEquals(INSERTED_NAME,insertedClient.getName());
+        Assert.assertEquals(INSERTED_ADDRESS,insertedClient.getAddress());
 
     }
 }

@@ -9,6 +9,9 @@ import android.util.Log;
 import org.chalup.microorm.MicroOrm;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.attr.id;
 
 
 /**
@@ -57,29 +60,27 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
                                                  " DROP TABLE IF EXISTS " + CLIENT_TABLE_NAME + "; " ;
 
     private MicroOrm uOrm = new MicroOrm();
-    private SQLiteDatabase database;
 
 
     public dbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        database = getWritableDatabase();
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(TAG, "onCreate: DB CREATED WITH FOLLOWING SCRIPT:" + CREATE_DATABASE);
-        getWritableDatabase().execSQL(CREATE_DATABASE);
+        sqLiteDatabase.execSQL(CREATE_DATABASE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         Log.d(TAG, "onUpgrade: Upgrading DB to " + newVersion);
-        database.execSQL(DROP_DB_SCRIPT);
+        getWritableDatabase().execSQL(DROP_DB_SCRIPT);
         onCreate(sqLiteDatabase);
     }
 
     public void dropDB(){
-        database.execSQL(DROP_DB_SCRIPT);
+        getWritableDatabase().execSQL(DROP_DB_SCRIPT);
 
     }
 
@@ -96,9 +97,9 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
     //Read
     @Override
     public ClientEntity getClientById(long id) {
-        String selcetion = CLIENT_COLUMN_ID + " = ?";
+        String selection = CLIENT_COLUMN_ID + " = ?";
         String[] selectionArgs = {Long.toString(id)};
-        try (Cursor cursor = getWritableDatabase().query(CLIENT_TABLE_NAME, CLIENT_COLUMNS, selcetion, selectionArgs, null, null, null)) {
+        try (Cursor cursor = getWritableDatabase().query(CLIENT_TABLE_NAME, CLIENT_COLUMNS, selection, selectionArgs, null, null, null)) {
             if (cursor.moveToFirst()) {
                 ClientEntity selectedClient = uOrm.fromCursor(cursor, ClientEntity.class);
                 Log.d(TAG, "getClientById: id = " + id + "\nClient: " + selectedClient);
@@ -110,8 +111,16 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
     }
 
     @Override
-    public ArrayList<ClientEntity> getClients() {
-        return null;
+    public List<ClientEntity> getClients() {
+        try (Cursor cursor = getWritableDatabase().query(CLIENT_TABLE_NAME, CLIENT_COLUMNS, null, null, null, null, null)) {
+            if (cursor.moveToFirst()) {
+                List<ClientEntity> selectedClients = uOrm.listFromCursor(cursor, ClientEntity.class);
+                Log.d(TAG, "getClientById: id = " + id + "\nClient: " + selectedClients);
+                return selectedClients;
+            } else {
+                return new ArrayList<>();
+            }
+        }
     }
 
     //Update

@@ -1,6 +1,7 @@
 package com.bogucki.router.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Michał Bogucki
@@ -10,7 +11,7 @@ interface Client {
     //Create
     long addClient(ClientEntity client);
     //Read
-    ArrayList <ClientEntity> getClients();
+    List<ClientEntity> getClients();
     ClientEntity getClientById(long id);
     //Update
     int updateClientById(long id);
