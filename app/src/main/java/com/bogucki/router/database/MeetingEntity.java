@@ -10,16 +10,16 @@ import java.util.Locale;
  */
 
 public class MeetingEntity {
-    @Column(dbHelper.MEETING_COLUMN_ID)
+    @Column(DbHelper.MEETING_COLUMN_ID)
     private int mId;
 
-    @Column(dbHelper.MEETING_COLUMN_CLIENT)
+    @Column(DbHelper.MEETING_COLUMN_CLIENT)
     private int mClientId;
 
-    @Column(dbHelper.MEETING_COLUMN_EARLIEST_DATE)
+    @Column(DbHelper.MEETING_COLUMN_EARLIEST_DATE)
     private Date mEarliestDate;
 
-    @Column(dbHelper.MEETING_COLUMN_LATEST_DATE)
+    @Column(DbHelper.MEETING_COLUMN_LATEST_DATE)
     private Date mLatestDate;
 
     public MeetingEntity(int clientId, Date earliestDate, Date latestDate) {

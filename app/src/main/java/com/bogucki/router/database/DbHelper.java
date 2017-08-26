@@ -1,5 +1,6 @@
 package com.bogucki.router.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,8 +19,8 @@ import static android.R.attr.id;
  * Created by Michał Bogucki
  */
 
-public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
-    private static final String TAG = dbHelper.class.getSimpleName();
+public class DbHelper extends SQLiteOpenHelper implements Client, Meeting {
+    private static final String TAG = DbHelper.class.getSimpleName();
 
     private static final int DB_VERSION = 1;
     public static final String DB_NAME = "ROUTER_LOCAL_DB";
@@ -41,7 +42,7 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
 
     static private final String CREATE_CLIENT_TABLE =
             "CREATE TABLE " + CLIENT_TABLE_NAME + "( " +
-                    CLIENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    CLIENT_COLUMN_ID + " INTEGER PRIMARY KEY  AUTOINCREMENT, " +
                     CLIENT_COLUMN_NAME + " TEXT NOT NULL, " +
                     CLIENT_COLUMN_ADDRESS + " TEXT NOT NULL); ";
 
@@ -62,7 +63,7 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
     private MicroOrm uOrm = new MicroOrm();
 
 
-    public dbHelper(Context context) {
+    public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -85,14 +86,24 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
     }
 
     //Create
-    @Override
+/*    @Override
     public long addClient(ClientEntity client) {
         long insertedID = getWritableDatabase().insertWithOnConflict(CLIENT_TABLE_NAME, null, uOrm.toContentValues(client), SQLiteDatabase.CONFLICT_IGNORE);
         Log.d(TAG, "addClient: inserted client row: " + client + " into db, id = " + insertedID);
         return insertedID;
+    }*/
+
+    private long addClientEntity(ClientEntity client) {
+        return getWritableDatabase().insertWithOnConflict(CLIENT_TABLE_NAME, null, getContentValuesFromClientEntity(client), SQLiteDatabase.CONFLICT_IGNORE);
     }
 
-
+    @Override
+    public long addClient(String name, String address) {
+        ClientEntity client = new ClientEntity(name, address);
+        long insertedID = addClientEntity(client);
+        Log.d(TAG, "addClient: inserted client row: " + client + " into db, id = " + insertedID);
+        return insertedID;
+    }
 
     //Read
     @Override
@@ -111,29 +122,64 @@ public class dbHelper extends SQLiteOpenHelper implements Client, Meeting {
     }
 
     @Override
-    public List<ClientEntity> getClients() {
+    public ArrayList<ClientEntity> getClients() {
         try (Cursor cursor = getWritableDatabase().query(CLIENT_TABLE_NAME, CLIENT_COLUMNS, null, null, null, null, null)) {
-            if (cursor.moveToFirst()) {
-                List<ClientEntity> selectedClients = uOrm.listFromCursor(cursor, ClientEntity.class);
-                Log.d(TAG, "getClientById: id = " + id + "\nClient: " + selectedClients);
-                return selectedClients;
-            } else {
-                return new ArrayList<>();
-            }
+
+            List<ClientEntity> selectedClients = uOrm.listFromCursor(cursor, ClientEntity.class);
+            Log.d(TAG, "getClientById: id = " + id + "\nClient: " + selectedClients);
+            return new ArrayList<>(selectedClients);
+
         }
     }
 
-    //Update
     @Override
-    public int updateClientById(long id) {
-        return 0;
+    public ArrayList<ClientEntity> getClientsByName(String name) {
+        if (null == name) {
+            return new ArrayList<>();
+        }
+        String selection = CLIENT_COLUMN_NAME + " = ?";
+        String[] selectionArgs = {name};
+        try (Cursor cursor = getWritableDatabase()
+                .query(CLIENT_TABLE_NAME, CLIENT_COLUMNS, selection, selectionArgs, null, null, null)) {
+            return new ArrayList<>(uOrm.listFromCursor(cursor, ClientEntity.class));
+        }
+    }
+
+
+    //Update
+    private int updateClientById(long id, ContentValues newValue) {
+        String whereClause = " id = ? ";
+        String[] whereArgs = {String.valueOf(id)};
+        return getWritableDatabase().update(CLIENT_TABLE_NAME, newValue, whereClause, whereArgs);
+    }
+
+
+    @Override
+    public int updateClientName(long id, String newName) {
+        ContentValues newValue = new ContentValues();
+        newValue.put(CLIENT_COLUMN_NAME, newName);
+        return updateClientById(id, newValue);
+    }
+
+    @Override
+    public int updateClientAddress(long id, String newAddress) {
+        ContentValues newValue = new ContentValues();
+        newValue.put(CLIENT_COLUMN_ADDRESS, newAddress);
+        return updateClientById(id, newValue);
     }
 
 
     //Delete
     @Override
     public int deleteClientById(long id) {
-        return 0;
+        return getWritableDatabase().delete(CLIENT_TABLE_NAME, " id = ? ", new String[]{String.valueOf(id)});
+    }
+
+
+    private ContentValues getContentValuesFromClientEntity(ClientEntity clientEntity) {
+        ContentValues contentValues = uOrm.toContentValues(clientEntity);
+        contentValues.remove("id");
+        return contentValues;
     }
 
 }

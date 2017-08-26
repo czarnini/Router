@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/ic_today_black_24dp"
+        android:title="Kalendarz"
+        android:visible="true"
+        android:id="@+id/meetings_option"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:id="@+id/clients_option"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="Klienci"
+        app:showAsAction="always"
+        android:visible="true" />
+
+
+</menu>
