@@ -3,4 +3,8 @@
     <string name="title_activity_main">Plan dnia</string>
     <string name="title_activity_clients">Klienci</string>
     <string name="title_activity_meetings">Spotkania</string>
+    <string name="ClientName">Nazwa klienta</string>
+    <string name="address">Adres</string>
+    <string name="new_client">Nowy klient</string>
+    <array name="edit_or_remove_client"> <item>Edytuj</item> <item>Usuń</item> </array>
 </resources>

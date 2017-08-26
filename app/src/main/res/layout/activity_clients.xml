@@ -29,7 +29,7 @@
 
         <ListView
             android:id="@+id/clients_list"
-             android:layout_width="match_parent"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:divider="@android:color/transparent"
@@ -37,10 +37,7 @@
             android:paddingTop="8dp"
             android:paddingRight="8dp"
             android:paddingLeft="8dp"
-            android:paddingBottom="32dp"
-            tools:listitem="@layout/client_list_item">
-
-
+            android:paddingBottom="32dp">
         </ListView>
     </LinearLayout>
 
