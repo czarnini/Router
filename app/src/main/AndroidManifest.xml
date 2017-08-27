@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -18,22 +18,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Clients"
+            android:name=".activities.Clients"
             android:label="@string/title_activity_clients"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bogucki.router.MainActivity"/>
+                android:value="com.bogucki.router.activities.MainActivity"/>
         </activity>
         <activity
-            android:name=".Meetings"
+            android:name=".activities.Meetings"
             android:label="@string/title_activity_meetings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bogucki.router.MainActivity"/>
+                android:value="com.bogucki.router.activities.MainActivity"/>
         </activity>
     </application>
 

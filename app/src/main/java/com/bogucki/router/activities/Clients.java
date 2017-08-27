@@ -1,8 +1,9 @@
-package com.bogucki.router;
+package com.bogucki.router.activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bogucki.router.R;
 import com.bogucki.router.dialogs.AddNewClientDialog;
 import com.bogucki.router.dialogs.ChooseActionForClientDialog;
 
@@ -112,8 +114,9 @@ public class Clients extends AppCompatActivity
             this.values = values;
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View rowView = inflater.inflate(R.layout.client_list_item, parent, false);
             TextView client = (TextView) rowView.findViewById(R.id.client_name);

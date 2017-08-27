@@ -1,8 +1,9 @@
-package com.bogucki.router;
+package com.bogucki.router.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,9 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bogucki.router.R;
+import com.bogucki.router.dialogs.DatePickerFragment;
+
 public class MainActivity extends AppCompatActivity
 {
     private ListView futureMeetings;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,11 +52,8 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.meetings_option:
             {
-                Intent intent = new Intent(this, Meetings.class);
-                startActivity(intent);
-
-
-
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getSupportFragmentManager(), TAG);
                 break;
             }
             case R.id.clients_option:
@@ -87,8 +89,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = getLayoutInflater();
             View rowView = inflater.inflate(R.layout.future_list_item, parent, false);
             TextView client = (TextView) rowView.findViewById(R.id.future_client);
             TextView address = (TextView) rowView.findViewById(R.id.future_address);

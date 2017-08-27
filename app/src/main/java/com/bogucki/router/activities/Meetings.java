@@ -1,4 +1,4 @@
-package com.bogucki.router;
+package com.bogucki.router.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bogucki.router.R;
 
 public class Meetings extends AppCompatActivity
 {
@@ -97,8 +99,7 @@ public class Meetings extends AppCompatActivity
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = getLayoutInflater();
             View rowView = inflater.inflate(R.layout.meeting_list_item, parent, false);
 
 
