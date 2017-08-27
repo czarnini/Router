@@ -6,21 +6,28 @@
               android:orientation="vertical">
 
     <TextView
+        android:id="@+id/client_name_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ClientName"/>
 
     <EditText
+        android:id="@+id/client_name_ET"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:nextFocusDown="@+id/client_address_ET"/>
 
 
     <TextView
+        android:id="@+id/client_address_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/address"/>
 
     <EditText
+        android:id="@+id/client_address_ET"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:singleLine="true"/>
 </LinearLayout>

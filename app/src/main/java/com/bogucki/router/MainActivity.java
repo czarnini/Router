@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(this, Meetings.class);
                 startActivity(intent);
+
+
+
                 break;
             }
             case R.id.clients_option:

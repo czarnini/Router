@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +16,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bogucki.router.dialogs.AddNewClientDialog;
+import com.bogucki.router.dialogs.ChooseActionForClientDialog;
 
 public class Clients extends AppCompatActivity
 {
@@ -31,7 +33,7 @@ public class Clients extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+ /*TODO: Reimplement adapter to be cursor adapter*/
         String tmp[][] = new String[10][2];
         for (int j = 0; j < 10; ++j)
         {
@@ -45,11 +47,16 @@ public class Clients extends AppCompatActivity
         clientsList.setAdapter(listAdapter);
 
 
+
         clientsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "onItemClick: Item clicked " + position);
                 DialogFragment dialogFragment = new ChooseActionForClientDialog();
+
+                Bundle args = new Bundle();
+                args.putLong("clientID", 1);
+                dialogFragment.setArguments(args);
+
                 dialogFragment.show(getSupportFragmentManager(), TAG);
             }
         });
