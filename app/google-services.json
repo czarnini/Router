@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "800599988683",
+    "firebase_url": "https://router-35b8b.firebaseio.com",
+    "project_id": "router-35b8b",
+    "storage_bucket": "router-35b8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800599988683:android:5dfe7bb58a41caa8",
+        "android_client_info": {
+          "package_name": "com.bogucki.router"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800599988683-0n0jbq5gvi7sacrkur02b422lg7oaios.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bogucki.router",
+            "certificate_hash": "0181059d5c48be2240dfc6292122eb7b9253c006"
+          }
+        },
+        {
+          "client_id": "800599988683-b404a7fec0tc316qoe871iaqcu44nta8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOVWrCbFUsMY77EXReUhf7Ovz_ykGCqR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800599988683-b404a7fec0tc316qoe871iaqcu44nta8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
