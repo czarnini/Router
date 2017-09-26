@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.bogucki.router.R;
-import com.bogucki.router.database.DbHelper;
+import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.models.Client;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by MichałBogucki
@@ -20,8 +24,11 @@ import com.bogucki.router.database.DbHelper;
 
 public class AddNewClientDialog extends DialogFragment {
 
+    private DatabaseReference clientsReference;
 
 
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -39,8 +46,7 @@ public class AddNewClientDialog extends DialogFragment {
                         String name = nameET.getText().toString();
                         String address = addressET.getText().toString();
                         if (!"".equals(name) && !"".equals(address)) {
-                            DbHelper helper = new DbHelper(getContext());
-                            helper.addClient(name, address);
+                            pushNewClientToDatabase(name, address);
                         }
                     }
                 })
@@ -53,6 +59,14 @@ public class AddNewClientDialog extends DialogFragment {
         Dialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
+    }
+
+    private void pushNewClientToDatabase(String name, String address) {
+        clientsReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
+
+        String pushId = clientsReference.push().getKey();
+
+        clientsReference.child(pushId).setValue( new Client(pushId, name, address));
     }
 
 

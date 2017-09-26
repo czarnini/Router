@@ -1,23 +1,36 @@
 package com.bogucki.router.models;
 
+import java.util.HashMap;
+
 /**
  * Created by Michał Bogucki
  */
 
 
-public class Courier {
+public class    Courier {
     private int id;
     private String name;
     private String surname;
+
+    public HashMap<Integer, Boolean> getCourierMeetings() {
+        return courierMeetings;
+    }
+
+    public void setCourierMeetings(HashMap<Integer, Boolean> courierMeetings) {
+        this.courierMeetings = courierMeetings;
+    }
+
+    private HashMap<Integer, Boolean> courierMeetings;
 
     //Firebase real-time database needs empty constructor
     public Courier() {
     }
 
-    public Courier(int id, String name, String surname) {
+    public Courier(int id, String name, String surname, HashMap<Integer, Boolean> courierMeetings) {
         this.id = id;
         this.name = name;
         this.surname = surname;
+        this.courierMeetings = courierMeetings;
     }
 
 

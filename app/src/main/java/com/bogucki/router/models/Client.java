@@ -1,32 +1,41 @@
 package com.bogucki.router.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Michał Bogucki
  */
 
 
 public class Client {
-    private long id;
+    public String getPushID() {
+        return pushID;
+    }
+
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
+    }
+
+    private String pushID;
     private String name;
-    private int defaultAddress;
+    private String address;
 
     //Firebase real-time database needs empty constructor
     public Client() {
     }
 
-    public Client(long id, String name, int address) {
-        this.id = id;
+    public Client(String pushID, String name, String address) {
+        this.pushID = pushID;
         this.name = name;
-        this.defaultAddress = address;
+        this.address = address;
     }
 
-    public long getId() {
-        return id;
+    public Client(String name, String address) {
+        this.name = name;
+        this.address = address;
     }
 
-    public void setId(int mId) {
-        this.id = mId;
-    }
     public String getName() {
         return name;
     }
@@ -35,16 +44,19 @@ public class Client {
         this.name = name;
     }
 
-    public int getAddress() {
-        return defaultAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress(int address) {
-        this.defaultAddress = address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setId(long mId) {
-        this.id = mId;
-    }
 
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+        result.put("address", address);
+        return result;
+    }
 }

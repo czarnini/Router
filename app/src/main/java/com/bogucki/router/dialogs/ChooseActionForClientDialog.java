@@ -3,6 +3,7 @@ package com.bogucki.router.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -16,14 +17,12 @@ import com.bogucki.router.Utils.ConstantValues;
 
 public class ChooseActionForClientDialog extends DialogFragment {
 
-    private long clientId;
+
     private static final String TAG = ChooseActionForClientDialog.class.getSimpleName();
 
-    @Override
-    public void setArguments(Bundle args) {
-        clientId = args.getLong("clientId");
-    }
 
+
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -31,19 +30,23 @@ public class ChooseActionForClientDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DialogFragment dialogFragment;
+
+                        Bundle args = getArguments();
                         switch (which){
                             case 0: //Edit
                                 dialogFragment = new AddNewClientDialog();
-
-                                Bundle args = new Bundle();
-                                args.putLong(ConstantValues.CLIENT_ID_BUNDLE_KEY, clientId);
-                                args.putString(ConstantValues.CHOOSE_ACTION_CLIENT, ConstantValues.EDIT_CLIENT_BUNDLE_VALUE);
-
+                                args.putString(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
+                                               ConstantValues.EDIT_CLIENT_BUNDLE_VALUE);
+                                dialogFragment.setArguments(args);
                                 dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
                                 break;
                             case 1: //Remove
                                 dialogFragment = new YesNoDialog();
+                                args.putString(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
+                                               ConstantValues.REMOVE_CLIENT_BUNDLE_VALUE);
+                                dialogFragment.setArguments(args);
                                 dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
+
                             default:
                                 Log.d(TAG, "onClick: wrong index selected!");
                                 break;
