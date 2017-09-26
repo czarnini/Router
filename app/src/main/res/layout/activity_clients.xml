@@ -27,8 +27,9 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <ListView
-            android:id="@+id/clients_list"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/clientRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -38,7 +39,8 @@
             android:paddingRight="8dp"
             android:paddingLeft="8dp"
             android:paddingBottom="32dp">
-        </ListView>
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
