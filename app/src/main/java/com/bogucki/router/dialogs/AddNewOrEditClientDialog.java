@@ -22,32 +22,50 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by MichałBogucki
  */
 
-public class AddNewClientDialog extends DialogFragment {
+public class AddNewOrEditClientDialog extends DialogFragment {
 
     private DatabaseReference clientsReference;
+    EditText nameET;
+    EditText addressET;
 
 
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
+        final Bundle args = getArguments();
+        final int action = args.getInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final View rootView = inflater.inflate(R.layout.add_or_edit_client, null) ;
+
+        nameET = (EditText) rootView.findViewById(R.id.client_name_ET);
+        addressET = (EditText) rootView.findViewById(R.id.client_address_ET);
+
+        if(action == ConstantValues.EDIT_CLIENT_BUNDLE_VALUE){
+            String name = args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY);
+            String address = args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY);
+
+            nameET.setText(name);
+            addressET.setText(address);
+        }
+
         builder.setView(rootView);
-        builder.setMessage(R.string.new_client)
+        builder.setMessage(action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE? R.string.new_client : R.string.edit_client)
                 .setPositiveButton(R.string.save_client, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EditText nameET = (EditText) rootView.findViewById(R.id.client_name_ET);
-                        EditText addressET = (EditText) rootView.findViewById(R.id.client_address_ET);
 
                         String name = nameET.getText().toString();
                         String address = addressET.getText().toString();
-                        if (!"".equals(name) && !"".equals(address)) {
+
+                        clientsReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
+                        if (action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE) {
                             pushNewClientToDatabase(name, address);
+                        } else {
+                            updateClient(args.getString(ConstantValues.CLIENT_ID_BUNDLE_KEY), name, address);
                         }
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -62,11 +80,18 @@ public class AddNewClientDialog extends DialogFragment {
     }
 
     private void pushNewClientToDatabase(String name, String address) {
-        clientsReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
 
-        String pushId = clientsReference.push().getKey();
+        if (!"".equals(name) && !"".equals(address)) {
+            String pushId = clientsReference.push().getKey();
+            clientsReference.child(pushId).setValue(new Client(pushId, name, address));
+        }
+    }
 
-        clientsReference.child(pushId).setValue( new Client(pushId, name, address));
+    private void updateClient(String pushId, String name, String address) {
+        if (!"".equals(name) && !"".equals(address)) {
+            DatabaseReference clientToUpdate = clientsReference.child(pushId);
+            clientToUpdate.setValue(new Client(pushId,name, address));
+        }
     }
 
 

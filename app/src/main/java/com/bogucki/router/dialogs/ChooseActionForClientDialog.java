@@ -34,15 +34,15 @@ public class ChooseActionForClientDialog extends DialogFragment {
                         Bundle args = getArguments();
                         switch (which){
                             case 0: //Edit
-                                dialogFragment = new AddNewClientDialog();
-                                args.putString(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
+                                dialogFragment = new AddNewOrEditClientDialog();
+                                args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
                                                ConstantValues.EDIT_CLIENT_BUNDLE_VALUE);
                                 dialogFragment.setArguments(args);
                                 dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
                                 break;
                             case 1: //Remove
                                 dialogFragment = new YesNoDialog();
-                                args.putString(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
+                                args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
                                                ConstantValues.REMOVE_CLIENT_BUNDLE_VALUE);
                                 dialogFragment.setArguments(args);
                                 dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);

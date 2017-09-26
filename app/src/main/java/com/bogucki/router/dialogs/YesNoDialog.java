@@ -26,8 +26,8 @@ public class YesNoDialog extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Bundle args = getArguments();
-                        String actionType = args.getString(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY);
-                        if(ConstantValues.REMOVE_CLIENT_BUNDLE_VALUE.equals(actionType)){
+                        int actionType = args.getInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY);
+                        if(ConstantValues.REMOVE_CLIENT_BUNDLE_VALUE == actionType){
                             String pushId = args.getString(ConstantValues.CLIENT_ID_BUNDLE_KEY);
                             DatabaseReference clientToRemove = null;
                             if (pushId != null) {

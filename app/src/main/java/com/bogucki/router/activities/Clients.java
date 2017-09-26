@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.bogucki.router.R;
 import com.bogucki.router.Utils.ConstantValues;
-import com.bogucki.router.dialogs.AddNewClientDialog;
+import com.bogucki.router.dialogs.AddNewOrEditClientDialog;
 import com.bogucki.router.dialogs.ChooseActionForClientDialog;
 import com.bogucki.router.models.Client;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -72,8 +72,16 @@ public class Clients extends AppCompatActivity
                 TextView idTV = (TextView)view.findViewById(R.id.push_id);
                 String pushId = idTV.getText().toString();
 
+                TextView nameTV = (TextView)view.findViewById(R.id.client_name);
+                String name = nameTV.getText().toString();
+
+                TextView addressTV = (TextView)view.findViewById(R.id.client_address);
+                String address = addressTV.getText().toString();
+
                 Bundle args = new Bundle();
                 args.putString(ConstantValues.CLIENT_ID_BUNDLE_KEY, pushId);
+                args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, name);
+                args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, address);
                 dialogFragment.setArguments(args);
 
                 dialogFragment.show(getSupportFragmentManager(), TAG);
@@ -86,7 +94,10 @@ public class Clients extends AppCompatActivity
         floatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                DialogFragment dialogFragment = new AddNewClientDialog();
+                Bundle args = new Bundle();
+                args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY, ConstantValues.ADD_CLIENT_BUNDLE_VALUE );
+                DialogFragment dialogFragment = new AddNewOrEditClientDialog();
+                dialogFragment.setArguments(args);
                 dialogFragment.show(getSupportFragmentManager(), TAG);
             }
         });
