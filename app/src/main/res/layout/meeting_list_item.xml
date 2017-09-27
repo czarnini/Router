@@ -9,6 +9,7 @@
 
 
     <TextView
+        android:text="powód"
         android:id="@+id/meeting_reason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,12 +20,14 @@
         android:id="@+id/client_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/meeting_reason"
         android:layout_marginBottom="0dp"
-        android:text="Gazownia"
-        android:layout_below="@id/meeting_reason"/>
+        android:text="nazwa"/>
+
 
     <TextView
-        android:id="@+id/client_address"
+        android:text="data"
+        android:id="@+id/closest_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/meeting_reason"
@@ -33,7 +36,8 @@
         />
 
     <TextView
-        android:id="@+id/closest_term"
+        android:text="adres"
+        android:id="@+id/client_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/client_name"

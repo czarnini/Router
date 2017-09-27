@@ -1,63 +1,51 @@
 package com.bogucki.router.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bogucki.router.R;
 import com.bogucki.router.dialogs.DatePickerFragment;
+import com.bogucki.router.models.Meeting;
+import com.bogucki.router.Utils.ConstantValues;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity
-{
-    private ListView futureMeetings;
+import java.util.Calendar;
+
+public class MainActivity extends AppCompatActivity {
+    private RecyclerView todayMeetings;
+    private DatabaseReference meetingsReference;
+    private FirebaseRecyclerAdapter mAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        String tmp[][] = new String[10][4];
-        for (int j = 0; j < 10; ++j)
-        {
-            tmp[j][3] = "18:30";
-            tmp[j][2] = "Odbiór zamówienia";
-            tmp[j][1] = "ul. Krucza 5, Warszawa";
-            tmp[j][0] = "Rolex";
-        }
-        futureMeetings = (ListView) findViewById(R.id.list_view_future_items);
-        MyListAdapter listAdapter = new MyListAdapter(this, tmp);
-
-
-        futureMeetings.setAdapter(listAdapter);
+        attachFireBaseAdapter();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.meetings_option:
-            {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.meetings_option: {
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getSupportFragmentManager(), TAG);
                 break;
             }
-            case R.id.clients_option:
-            {
+            case R.id.clients_option: {
                 Intent intent = new Intent(this, Clients.class);
                 startActivity(intent);
                 break;
@@ -67,40 +55,48 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
 
-    private class MyListAdapter extends ArrayAdapter<String[]>
+    private void attachFireBaseAdapter() {
 
-    {
-        private final Context context;
-        private final String[][] values;
+        meetingsReference = FirebaseDatabase.getInstance().getReference()
+                .child(ConstantValues.MEETINGS_FIREBASE)
+                .child(getFormattedDate());
 
-        public MyListAdapter(Context context, String[][] values)
-        {
-            super(context, R.layout.future_list_item, values);
-            this.context = context;
-            this.values = values;
-        }
+        todayMeetings = (RecyclerView) findViewById(R.id.today_meetings);
+        todayMeetings.setLayoutManager(new LinearLayoutManager(this));
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.future_list_item, parent, false);
-            TextView client = (TextView) rowView.findViewById(R.id.future_client);
-            TextView address = (TextView) rowView.findViewById(R.id.future_address);
-            TextView reason = (TextView) rowView.findViewById(R.id.future_reason);
-            TextView time = (TextView) rowView.findViewById(R.id.future_time);
-            client.setText(values[position][0]);
-            address.setText(values[position][1]);
-            reason.setText(values[position][2]);
-            time.setText(values[position][3]);
-            return rowView;
-        }
+        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference) {
+            @Override
+            protected void populateViewHolder(MeetingHolder viewHolder, Meeting model, int position) {
+                viewHolder.setClient(model.getClient());
+                viewHolder.setAddress(model.getAddress());
+                viewHolder.setReason(model.getReason());
+                viewHolder.setDate(model.getEarliestTimeOfDelivery());
+                viewHolder.setPushId(model.getPushId());
+
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+
+                    }
+                });
+            }
+        };
+        todayMeetings.setAdapter(mAdapter);
+    }
+
+    @NonNull
+    private String getFormattedDate() {
+        Calendar calendar = Calendar.getInstance();
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(calendar.get(Calendar.MONTH) +1 ); // because January is 0
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        return day + "_" + month + "_" + year;
     }
 
 }

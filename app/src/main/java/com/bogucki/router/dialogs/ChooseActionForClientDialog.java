@@ -26,7 +26,7 @@ public class ChooseActionForClientDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(R.array.edit_or_remove_client, new DialogInterface.OnClickListener() {
+        builder.setItems(R.array.edit_or_remove, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DialogFragment dialogFragment;

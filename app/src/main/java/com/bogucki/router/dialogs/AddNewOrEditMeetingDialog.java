@@ -9,11 +9,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Michał Bogucki
@@ -35,7 +32,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
 
         builder.setView(rootView);
         builder.setMessage("Nowe spotkanie")
-                .setPositiveButton(R.string.save_client, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                     }

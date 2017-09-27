@@ -3,7 +3,6 @@ package com.bogucki.router.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import android.view.View;
 
 import com.bogucki.router.R;
 import com.bogucki.router.Utils.ConstantValues;
-import com.bogucki.router.dialogs.AddNewOrEditClientDialog;
 import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
 import com.bogucki.router.models.Meeting;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;

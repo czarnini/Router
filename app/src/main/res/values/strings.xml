@@ -9,10 +9,10 @@
     <string name="confirm">Czy na pewno usunąć wpis?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
-    <string name="save_client">Zapisz</string>
+    <string name="save">Zapisz</string>
     <string name="cancel">anuluj</string>
-    <string name="edit_client">Edytuj</string>
+    <string name="edit">Edytuj</string>
     <string name="reason">Powód spotkania</string>
     <string name="date">Data</string>
-    <array name="edit_or_remove_client"> <item>Edytuj</item> <item>Usuń</item> </array>
+    <array name="edit_or_remove"> <item>Edytuj</item> <item>Usuń</item> </array>
 </resources>

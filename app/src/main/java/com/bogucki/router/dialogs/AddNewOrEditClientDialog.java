@@ -52,8 +52,8 @@ public class AddNewOrEditClientDialog extends DialogFragment {
         }
 
         builder.setView(rootView);
-        builder.setMessage(action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE? R.string.new_client : R.string.edit_client)
-                .setPositiveButton(R.string.save_client, new DialogInterface.OnClickListener() {
+        builder.setMessage(action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE? R.string.new_client : R.string.edit)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String name = nameET.getText().toString();
