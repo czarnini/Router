@@ -125,8 +125,8 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list_view_future_items"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/today_meetings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@android:color/transparent"

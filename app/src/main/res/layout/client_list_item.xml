@@ -25,5 +25,12 @@
         android:layout_below="@id/client_name"
         />
 
+    <TextView
+        android:id="@+id/push_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
 
 </RelativeLayout>

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "800599988683-c43rq0pqsmps23hr176409u7j3nh9ito.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bogucki.router",
+            "certificate_hash": "c8597302bcc76efbd7c93bcf9bb92454cdd5a700"
+          }
+        },
+        {
           "client_id": "800599988683-0n0jbq5gvi7sacrkur02b422lg7oaios.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

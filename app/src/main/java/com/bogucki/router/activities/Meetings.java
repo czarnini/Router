@@ -1,73 +1,93 @@
 package com.bogucki.router.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.bogucki.router.R;
+import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
+import com.bogucki.router.models.Meeting;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class Meetings extends AppCompatActivity
-{
-    private ListView meetingsList;
+public class Meetings extends AppCompatActivity {
+
+    private static final String TAG = Meetings.class.getSimpleName();
+    private String formattedDate;
+    private RecyclerView meetingsList;
+    private DatabaseReference meetingsReference;
+    FirebaseRecyclerAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
         setContentView(R.layout.activity_meetings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        formattedDate = createDateFromExtras(extras);
+        setTitle(formattedDate.replaceAll("_", "."));
 
-        String tmp[][] = new String[10][4];
-        for (int j = 0; j < 10; ++j)
-        {
-            tmp[j][0] = "Odbiór tony wiórów";
-            tmp[j][1] = "ROMBAPOL POLEX sp. Z.O.O";
-            tmp[j][2] = "ul. Polska 14/10, 01-444 Warszawa";
-            tmp[j][3] = "Najbliższy wolny termin: 09.06.2017 19:00";
-        }
-        meetingsList = (ListView) findViewById(R.id.meetings_list);
-        MyListAdapter listAdapter = new MyListAdapter(this, tmp);
-        meetingsList.setAdapter(listAdapter);
+        attachFireBaseAdapter();
+        handleFloatingButton();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
-        {
+    private void attachFireBaseAdapter(){
+        meetingsReference = FirebaseDatabase.getInstance().getReference()
+                .child(ConstantValues.MEETINGS_FIREBASE)
+                .child(formattedDate);
+
+        meetingsList = (RecyclerView) findViewById(R.id.meetings_list);
+        meetingsList.setLayoutManager(new LinearLayoutManager(this));
+
+        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(Meeting.class, R.layout.meeting_list_item, MeetingHolder.class,meetingsReference){
             @Override
-            public void onClick(View view)
-            {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            protected void populateViewHolder(MeetingHolder viewHolder, Meeting model, int position) {
+                viewHolder.setClient(model.getClient());
+                viewHolder.setAddress(model.getAddress());
+                viewHolder.setReason(model.getReason());
+                viewHolder.setDate(model.getEarliestTimeOfDelivery());
+                viewHolder.setPushId(model.getPushId());
+
+                viewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+
+                    }
+                });
             }
-        });
+        };
+        meetingsList.setAdapter(mAdapter);
+    }
+
+    private String createDateFromExtras(Bundle extras) {
+        if(null != extras) {
+            return extras.getString("day") + "_" + extras.getString("month") + "_" + extras.getString("year");
+        } else {
+            return "";
+        }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.todays_route_option:
-            {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.todays_route_option: {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.clients_option:
-            {
+            case R.id.clients_option: {
                 Intent intent = new Intent(this, Clients.class);
                 startActivity(intent);
                 break;
@@ -77,44 +97,20 @@ public class Meetings extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.meetings, menu);
         return true;
     }
 
-
-    private class MyListAdapter extends ArrayAdapter<String[]>
-
-    {
-        private final Context context;
-        private final String[][] values;
-
-        public MyListAdapter(Context context, String[][] values)
-        {
-            super(context, R.layout.future_list_item, values);
-            this.context = context;
-            this.values = values;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.meeting_list_item, parent, false);
-
-
-            TextView reason = (TextView) rowView.findViewById(R.id.meeting_reason);
-            TextView client = (TextView) rowView.findViewById(R.id.client_address);
-            TextView address = (TextView) rowView.findViewById(R.id.client_address);
-            TextView term = (TextView) rowView.findViewById(R.id.closest_term);
-
-            reason.setText(values[position][0]);
-            client.setText(values[position][1]);
-            address.setText(values[position][2]);
-            term.setText(values[position][3]);
-
-            return rowView;
-        }
+    private void handleFloatingButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
+                dialogFragment.show(getSupportFragmentManager(), TAG);
+            }
+        });
     }
 
 }

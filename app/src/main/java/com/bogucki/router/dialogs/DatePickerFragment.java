@@ -30,8 +30,11 @@ public class DatePickerFragment  extends DialogFragment implements DatePickerDia
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    public void onDateSet(DatePicker view, int year, int month, int day) {
         Intent intent = new Intent(getContext(), Meetings.class);
+        intent.putExtra("day", String.valueOf(day));
+        intent.putExtra("month", String.valueOf(month+1)); //because for some reason January == 0
+        intent.putExtra("year", String.valueOf(year));
         startActivity(intent);
 
     }
