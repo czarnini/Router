@@ -17,4 +17,8 @@ public class ConstantValues {
     public static final int REMOVE_CLIENT_BUNDLE_VALUE  = 0;
     public static final int EDIT_CLIENT_BUNDLE_VALUE    = 1;
     public static final int ADD_CLIENT_BUNDLE_VALUE     = 2;
+
+
+    public static final String FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY = "clientsOrMeetings";
+    public static final String MEETING_DATE_BUNDLE_KEY = "meetingDate";
 }

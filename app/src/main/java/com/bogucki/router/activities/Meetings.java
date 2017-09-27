@@ -108,9 +108,17 @@ public class Meetings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
+                attachArgumentsForDialog(dialogFragment);
                 dialogFragment.show(getSupportFragmentManager(), TAG);
             }
         });
+    }
+
+    private void attachArgumentsForDialog(DialogFragment dialogFragment) {
+        Bundle args = new Bundle();
+        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+        dialogFragment.setArguments(args);
     }
 
 }

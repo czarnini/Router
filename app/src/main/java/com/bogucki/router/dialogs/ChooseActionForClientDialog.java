@@ -33,7 +33,9 @@ public class ChooseActionForClientDialog extends DialogFragment {
                 Bundle args = getArguments();
                 switch (which) {
                     case 0: //New meeting
+                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.CLIENTS_FIREBASE);
                         dialogFragment = new AddNewOrEditMeetingDialog();
+                        dialogFragment.setArguments(args);
                         dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
                         break;
 
