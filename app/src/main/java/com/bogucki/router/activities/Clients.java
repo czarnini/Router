@@ -135,43 +135,6 @@ public class Clients extends AppCompatActivity {
     }
 
 
-    public static class ClientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView nameTV;
-        private final TextView addressTV;
-        private final TextView pushTV;
 
-        private ItemClickListener itemClickListener;
-        private String pushId;
-
-        public ClientHolder(View itemView) {
-            super(itemView);
-            nameTV = (TextView) itemView.findViewById(R.id.client_name);
-            addressTV = (TextView) itemView.findViewById(R.id.client_address);
-            pushTV = (TextView) itemView.findViewById(R.id.push_id);
-            itemView.setOnClickListener(this);
-        }
-
-
-        public void setItemClickListener(ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View view) {
-            itemClickListener.onClick(view, getAdapterPosition());
-        }
-
-        public void setName(String name) {
-            nameTV.setText(name);
-        }
-
-        public void setAddress(String address) {
-            addressTV.setText(address);
-        }
-
-        public void setPushId(String pushId) {
-            pushTV.setText(pushId);
-        }
-    }
 
 }

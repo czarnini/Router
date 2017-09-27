@@ -5,51 +5,79 @@ package com.bogucki.router.models;
  */
 
 public class Meeting {
-    private int clientID;
-    private int courierID;
-    private long earliestTimeOfDelivery;
-    private long latestTimeOfDelivery;
+
+
+    //TODO courierID?
+    private String pushId;
+    private String client;
+    private String address;
+    private String reason; //TODO czy to na pewno zostaje?
+    private String earliestTimeOfDelivery;
+    private String latestTimeOfDelivery;
+
+
+    public Meeting(String pushId, String client, String address, String reason,
+                   String earliestTimeOfDelivery, String latestTimeOfDelivery) {
+        this.pushId = pushId;
+        this.client = client;
+        this.address = address;
+        this.reason = reason;
+        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
+        this.latestTimeOfDelivery = latestTimeOfDelivery;
+    }
+
+    public String getClient() {
+
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getEarliestTimeOfDelivery() {
+        return earliestTimeOfDelivery;
+    }
+
+    public void setEarliestTimeOfDelivery(String earliestTimeOfDelivery) {
+        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
+    }
+
+    public String getLatestTimeOfDelivery() {
+        return latestTimeOfDelivery;
+    }
+
+    public void setLatestTimeOfDelivery(String latestTimeOfDelivery) {
+        this.latestTimeOfDelivery = latestTimeOfDelivery;
+    }
+
 
     //Firebase real-time database needs empty constructor
     public Meeting() {
     }
 
-    public Meeting(int clientID, int courierID, long earliestTimeOfDelivery, long latestTimeOfDelivery) {
-        this.clientID = clientID;
-        this.courierID = courierID;
-        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
-        this.latestTimeOfDelivery = latestTimeOfDelivery;
+
+    public String getPushId() {
+        return pushId;
     }
 
-    public int getClientID() {
-        return clientID;
-    }
-
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
-    }
-
-    public int getCourierID() {
-        return courierID;
-    }
-
-    public void setCourierID(int courierID) {
-        this.courierID = courierID;
-    }
-
-    public long getEarliestTimeOfDelivery() {
-        return earliestTimeOfDelivery;
-    }
-
-    public void setEarliestTimeOfDelivery(long earliestTimeOfDelivery) {
-        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
-    }
-
-    public long getLatestTimeOfDelivery() {
-        return latestTimeOfDelivery;
-    }
-
-    public void setLatestTimeOfDelivery(long latestTimeOfDelivery) {
-        this.latestTimeOfDelivery = latestTimeOfDelivery;
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 }

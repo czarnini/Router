@@ -9,7 +9,6 @@
 
 
     <TextView
-        android:text="Naprawa pieca Gazowego"
         android:id="@+id/meeting_reason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +24,6 @@
         android:layout_below="@id/meeting_reason"/>
 
     <TextView
-        android:text="ul. Okopowa 15, 01-111 Warszawa"
         android:id="@+id/client_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,20 +33,16 @@
         />
 
     <TextView
-        android:text="Najbliższy termin: 1.05.2016 16:00"
         android:id="@+id/closest_term"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/client_name"
         />
 
-    <Button
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:id="@+id/button2"
-        android:layout_width="40dp"
+    <TextView
+        android:id="@+id/push_id"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:text="..."
-        android:textColor="@color/colorAccent"/>
+        android:visibility="gone"/>
+
 </RelativeLayout>

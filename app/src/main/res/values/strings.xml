@@ -12,5 +12,7 @@
     <string name="save_client">Zapisz</string>
     <string name="cancel">anuluj</string>
     <string name="edit_client">Edytuj</string>
+    <string name="reason">Powód spotkania</string>
+    <string name="date">Data</string>
     <array name="edit_or_remove_client"> <item>Edytuj</item> <item>Usuń</item> </array>
 </resources>
