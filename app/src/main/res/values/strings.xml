@@ -14,5 +14,5 @@
     <string name="edit">Edytuj</string>
     <string name="reason">Powód spotkania</string>
     <string name="date">Data</string>
-    <array name="edit_or_remove"> <item>Edytuj</item> <item>Usuń</item> </array>
+    <array name="choose_action_for_client"> <item>Nowe spotkanie</item>  <item>Edytuj</item> <item>Usuń</item> </array>
 </resources>
