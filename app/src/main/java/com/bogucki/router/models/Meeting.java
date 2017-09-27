@@ -11,7 +11,7 @@ public class Meeting {
     private String pushId;
     private String client;
     private String address;
-    private String reason; //TODO czy to na pewno zostaje?
+    private String reason;
     private String earliestTimeOfDelivery;
     private String latestTimeOfDelivery;
 
