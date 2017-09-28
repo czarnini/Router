@@ -3,7 +3,7 @@ package com.bogucki.router.activities;
 import android.view.View;
 
 /**
- * Created by boguc on 26.09.2017.
+ * Created by Michal Bogucki
  */
 
 public interface ItemClickListener {

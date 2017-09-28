@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,8 +26,14 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView todayMeetings;
     private DatabaseReference meetingsReference;
-    private FirebaseRecyclerAdapter mAdapter;
+    FirebaseRecyclerAdapter mAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAdapter.cleanup();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +77,19 @@ public class MainActivity extends AppCompatActivity {
         todayMeetings = (RecyclerView) findViewById(R.id.today_meetings);
         todayMeetings.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference) {
+        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
+                Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference) {
             @Override
             protected void populateViewHolder(MeetingHolder viewHolder, Meeting model, int position) {
                 viewHolder.setClient(model.getClient());
                 viewHolder.setAddress(model.getAddress());
                 viewHolder.setReason(model.getReason());
                 viewHolder.setDate(model.getEarliestTimeOfDelivery());
-                viewHolder.setPushId(model.getPushId());
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view, int position) {
-
+                    public void onClick(View view) {
+                        Log.d(TAG, "onClick: ");
                     }
                 });
             }
@@ -96,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         String month = String.valueOf(calendar.get(Calendar.MONTH) +1 ); // because January is 0
         String year = String.valueOf(calendar.get(Calendar.YEAR));
-        return day + "_" + month + "_" + year;
+        return "27_9_2017";
+        //return day + "_" + month + "_" + year;
     }
 
 }

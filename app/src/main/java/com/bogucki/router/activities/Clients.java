@@ -9,10 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.bogucki.router.R;
 import com.bogucki.router.Utils.ConstantValues;
@@ -47,32 +47,22 @@ public class Clients extends AppCompatActivity {
         clientsList = (RecyclerView) findViewById(R.id.clientRecycler);
         clientsList.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new FirebaseRecyclerAdapter<Client, ClientHolder>(Client.class, R.layout.client_list_item, ClientHolder.class, databaseReference) {
+        mAdapter = new FirebaseRecyclerAdapter<Client, ClientHolder>(
+                Client.class, R.layout.client_list_item, ClientHolder.class, databaseReference) {
             @Override
-            protected void populateViewHolder(ClientHolder viewHolder, Client model, int position) {
+            protected void populateViewHolder(ClientHolder viewHolder, final Client model, int position) {
                 viewHolder.setName(model.getName());
                 viewHolder.setAddress(model.getAddress());
-                viewHolder.setPushId(model.getPushID());
-
 
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position) {
                         DialogFragment dialogFragment = new ChooseActionForClientDialog();
 
-                        TextView idTV = (TextView) view.findViewById(R.id.push_id);
-                        String pushId = idTV.getText().toString();
-
-                        TextView nameTV = (TextView) view.findViewById(R.id.client_name);
-                        String name = nameTV.getText().toString();
-
-                        TextView addressTV = (TextView) view.findViewById(R.id.client_address);
-                        String address = addressTV.getText().toString();
-
                         Bundle args = new Bundle();
-                        args.putString(ConstantValues.CLIENT_ID_BUNDLE_KEY, pushId);
-                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, name);
-                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, address);
+                        args.putString(ConstantValues.CLIENT_ID_BUNDLE_KEY, model.getPushID());
+                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, model.getName());
+                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
                         dialogFragment.setArguments(args);
 
                         dialogFragment.show(getSupportFragmentManager(), TAG);

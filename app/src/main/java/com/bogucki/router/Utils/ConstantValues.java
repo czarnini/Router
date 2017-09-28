@@ -13,12 +13,15 @@ public class ConstantValues {
     public static final String CLIENT_NAME_BUNDLE_KEY = "clientName";
     public static final String CLIENT_ADDRESS_BUNDLE_KEY = "clientAdress";
 
-    public static final String CHOOSE_ACTION_BUNDLE_KEY = "actionID";
-    public static final int REMOVE_CLIENT_BUNDLE_VALUE  = 0;
-    public static final int EDIT_CLIENT_BUNDLE_VALUE    = 1;
-    public static final int ADD_CLIENT_BUNDLE_VALUE     = 2;
+    public static final String CHOOSE_ACTION_BUNDLE_KEY    = "actionID";
+    public static final int    REMOVE_CLIENT_BUNDLE_VALUE  = 0;
+    public static final int    EDIT_CLIENT_BUNDLE_VALUE    = 1;
+    public static final int    ADD_CLIENT_BUNDLE_VALUE     = 2;
+    public static final int    REMOVE_MEETING_BUNDLE_VALUE = 4;
+    public static final int    EDIT_MEETING_BUNDLE_VALUE   = 5;
 
 
     public static final String FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY = "clientsOrMeetings";
-    public static final String MEETING_DATE_BUNDLE_KEY = "meetingDate";
+    public static final String MEETING_DATE_BUNDLE_KEY                  = "meetingDate";
+    public static final String MEETING_ID_BUNDLE_KEY                    = "meetingID";
 }
