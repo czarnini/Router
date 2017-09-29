@@ -1,5 +1,10 @@
 package com.bogucki.router.models;
 
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+
+import com.bogucki.router.Utils.ConstantValues;
+
 /**
  * Created by Michał Bogucki
  */
@@ -80,4 +85,5 @@ public class Meeting {
     public void setPushId(String pushId) {
         this.pushId = pushId;
     }
+
 }

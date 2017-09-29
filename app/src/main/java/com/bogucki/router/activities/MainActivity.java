@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bogucki.router.R;
+import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
+import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
 import com.bogucki.router.Utils.ConstantValues;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
                 Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference) {
             @Override
-            protected void populateViewHolder(MeetingHolder viewHolder, Meeting model, int position) {
+            protected void populateViewHolder(MeetingHolder viewHolder, final Meeting model, int position) {
                 viewHolder.setClient(model.getClient());
                 viewHolder.setAddress(model.getAddress());
                 viewHolder.setReason(model.getReason());
@@ -89,7 +91,16 @@ public class MainActivity extends AppCompatActivity {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.d(TAG, "onClick: ");
+                        DialogFragment dialogFragment = new ChooseActionForMeeting();
+                        Bundle args = new Bundle();
+                        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, model.getPushId());
+                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, model.getClient());
+                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
+                        args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
+                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, getFormattedDate());
+                        dialogFragment.setArguments(args);
+                        dialogFragment.show(getSupportFragmentManager(), TAG);
                     }
                 });
             }
@@ -106,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         return "27_9_2017";
         //return day + "_" + month + "_" + year;
     }
+
+
 
 }
 

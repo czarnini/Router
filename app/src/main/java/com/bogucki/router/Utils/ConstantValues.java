@@ -24,4 +24,5 @@ public class ConstantValues {
     public static final String FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY = "clientsOrMeetings";
     public static final String MEETING_DATE_BUNDLE_KEY                  = "meetingDate";
     public static final String MEETING_ID_BUNDLE_KEY                    = "meetingID";
+    public static final String MEETING_REASON_BUNDLE_KEY                = "meetingReason";
 }

@@ -8,17 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.bogucki.router.R;
 import com.bogucki.router.Utils.ConstantValues;
 import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
-import com.bogucki.router.dialogs.ChooseActionForClientDialog;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.models.Meeting;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -46,7 +42,7 @@ public class Meetings extends AppCompatActivity {
         setTitle(formattedDate.replaceAll("_", "."));
     }
 
-    private void attachFireBaseAdapter(){
+    private void attachFireBaseAdapter() {
         DatabaseReference meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
                 .child(formattedDate);
@@ -58,7 +54,7 @@ public class Meetings extends AppCompatActivity {
                 Meeting.class,
                 R.layout.meeting_list_item,
                 MeetingHolder.class,
-                meetingsReference){
+                meetingsReference) {
             @Override
             protected void populateViewHolder(MeetingHolder viewHolder, final Meeting model, int position) {
                 viewHolder.setClient(model.getClient());
@@ -69,14 +65,16 @@ public class Meetings extends AppCompatActivity {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                            DialogFragment dialogFragment = new ChooseActionForMeeting();
-
-                            Bundle args = new Bundle();
-                            args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, model.getPushId());
-                            args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
-                            dialogFragment.setArguments(args);
-
-                            dialogFragment.show(getSupportFragmentManager(), TAG);
+                        DialogFragment dialogFragment = new ChooseActionForMeeting();
+                        Bundle args = new Bundle();
+                        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, model.getPushId());
+                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, model.getClient());
+                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
+                        args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
+                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                        dialogFragment.setArguments(args);
+                        dialogFragment.show(getSupportFragmentManager(), TAG);
                     }
                 });
 
@@ -86,7 +84,7 @@ public class Meetings extends AppCompatActivity {
     }
 
     private String createDateFromExtras(Bundle extras) {
-        if(null != extras) {
+        if (null != extras) {
             return extras.getString("day") + "_" + extras.getString("month") + "_" + extras.getString("year");
         } else {
             return "";
@@ -123,18 +121,15 @@ public class Meetings extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
-                    attachArgumentsForDialog(dialogFragment);
+                    Bundle args = new Bundle();
+                    args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+                    args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                    dialogFragment.setArguments(args);
                     dialogFragment.show(getSupportFragmentManager(), TAG);
                 }
             });
         }
     }
 
-    private void attachArgumentsForDialog(DialogFragment dialogFragment) {
-        Bundle args = new Bundle();
-        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
-        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
-        dialogFragment.setArguments(args);
-    }
 
 }
