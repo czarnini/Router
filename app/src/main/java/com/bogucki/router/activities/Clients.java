@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +35,6 @@ public class Clients extends AppCompatActivity {
         setContentView(R.layout.activity_clients);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         attachFireBaseAdapter();
         handleFloatingButton();
     }
@@ -122,6 +120,30 @@ public class Clients extends AppCompatActivity {
     }
 
 
+    void insertClients() {
+        String[] adresses = {"Janowskiego 13, Warszawa", "Wspólna 73, Warszawa", "Mielczarskiego 10, Warszawa",
+                "Konduktorska 2, Warszawa", "Komorska 29/33, Warszawa", "Herbsta 4, Warszawa", "Waszyngtona 12/14, Warszawa",
+                "Świętokrzyska 31/33a, Warszawa", "Berensona 12b, Warszawa", "Woronicza 50, Warszawa", "Zawiszy 5, Warszawa",
+                "Kredytowa 5, Warszawa", "al. KEN 36, Warszawa", "Rondo ONZ 1, Warszawa", "Czerniakowska 22, Warszawa",
+                "Trakt Brzeski 50, Warszawa", "Bruna 20, Warszawa", "Hoża 29/31, Warszawa", "Daniłowskiego 2/4, Warszawa",
+                "Anielewicza 2, Warszawa", "Sosnkowskiego 11, Warszawa", "Domaniewska 31, Warszawa", "Ks. Janusza 23, Warszawa",
+                "Nugat 9, Warszawa", "Gwiaździsta 15s, Warszawa", "Wojciecha Bogusławskiego 6a, Warszawa",
+                "Gen. Zajączka 9, Warszawa", "Jana Pawła II 27, Warszawa", "Staffa 6, Warszawa", "Św. Wincentego 114, Warszawa",
+                "Rembielińska 7, Warszawa", "Sierpińskiego 1, Warszawa", "Klaudyny 26, Warszawa", "Góralska 7, Warszawa",
+                "Wojciechowskiego 18, Warszawa", "Belgradzka 6, Warszawa", "Powsińska 31, Warszawa", "Modzelewskiego 42/44, Warszawa",
+                "Conrada 11, Warszawa", "Światowida 18, Warszawa", "Fieldorfa 41, Warszawa", "Wolska 71/73, Warszawa",
+                "Toruńska 92, Warszawa", "Światowida 41, Warszawa", "Szolc-Rogozińskiego 1, Warszawa", "Sosnkowskiego 1c, Warszawa",
+                "Patriotów 154, Warszawa", "Nerudy 1, Warszawa", "Młynarska 8/12, Warszawa", "Kwiatkowskiego 1, Warszawa",
+                "Kondratowicza 39, Warszawa", "Kleszczowa 18, Warszawa", "Fieldorfa 37, Warszawa", "Czerska 4/6, Warszawa",
+                "Stalowa 60/64, Warszawa", "Połczyńska 121-125, Warszawa", "Al. KEN 14, Warszawa", "Górczewska 212/226, Warszawa"};
+        int i = 1;
+        DatabaseReference clients = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
+        for (String address : adresses) {
+            String pushId = clients.push().getKey();
+            clients.child(pushId).setValue(new Client(pushId, String.valueOf(i), address));
+            ++i;
+        }
+    }
 
 
 }
