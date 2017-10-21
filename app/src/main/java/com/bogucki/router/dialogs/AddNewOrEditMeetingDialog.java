@@ -3,13 +3,18 @@ package com.bogucki.router.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bogucki.router.R;
@@ -24,7 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AddNewOrEditMeetingDialog extends DialogFragment {
 
-    private EditText nameTV;
+    private SearchView nameTV;
     private EditText addressTV;
     private EditText dateTV;
     private TextView reasonTV;
@@ -40,7 +45,12 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         final View rootView = inflater.inflate(R.layout.add_or_edit_meeting, null);
 
 
-        nameTV = (EditText) rootView.findViewById(R.id.client_name);
+        nameTV = (SearchView) rootView.findViewById(R.id.client_name);
+        nameTV.setQueryHint("Nazwa klienta");
+//        nameTV.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
+
+
+
         addressTV = (EditText) rootView.findViewById(R.id.client_address);
         dateTV = (EditText) rootView.findViewById(R.id.date);
         reasonTV = (EditText) rootView.findViewById(R.id.reason);
@@ -51,10 +61,19 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         builder.setMessage("Nowe spotkanie")
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
-                            editMeeting();
-                        } else {
-                            addNewMeeting();
+
+                        String  client = nameTV.getQuery().toString(),
+                                address = addressTV.getText().toString(),
+                                reason = reasonTV.getText().toString(),
+                                date = dateTV.getText().toString().replaceAll("\\.", "_");
+                        Meeting meeting = new Meeting(pushId, client, address, reason, "TMP", "TMP2");
+
+                        if (!"".equals(meeting.getClient()) && !"".equals(meeting.getAddress()) && !"".equals(meeting.getAddress()) && !"".equals(date)) {
+                            if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
+                                editMeeting(meeting, date);
+                            } else {
+                                addNewMeeting(meeting, date);
+                            }
                         }
                     }
                 })
@@ -94,7 +113,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
      * @param args bundle passed to this dialog
      */
     private void handleNewMeetingFromClient(Bundle args) {
-        nameTV.setText(args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY));
+        nameTV.setQuery(args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY), false);
         addressTV.setText(args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY));
     }
 
@@ -105,24 +124,22 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
      * @param args bundle passed to this dialog
      */
     private void handleNewMeetingFromMeeting(Bundle args) {
-        dateTV.setText(args.getString(ConstantValues.MEETING_DATE_BUNDLE_KEY));
+        dateTV.setText(args.getString(ConstantValues.MEETING_DATE_BUNDLE_KEY).replaceAll("_","."));
     }
 
-    private void addNewMeeting() {
-        String  client = nameTV.getText().toString(),
-                address = addressTV.getText().toString(),
-                reason = reasonTV.getText().toString(),
-                date = dateTV.getText().toString();
-
-        if (!"".equals(client) && !"".equals(address) && !"".equals(reason) && !"".equals(date)) {
+    private void addNewMeeting(Meeting meeting, String date) {
             DatabaseReference meetingReference = FirebaseDatabase.getInstance().getReference()
                     .child(ConstantValues.MEETINGS_FIREBASE)
                     .child(date);
             String pushId = meetingReference.push().getKey();
-            meetingReference.child(pushId).setValue(new Meeting(pushId, client, address, reason, "TMP", "TMP2"));
-        }
+            meetingReference.child(pushId).setValue(meeting);
     }
 
-    private void editMeeting() {
+    private void editMeeting(Meeting meeting, String date) {
+            DatabaseReference meetingReference = FirebaseDatabase.getInstance().getReference()
+                    .child(ConstantValues.MEETINGS_FIREBASE)
+                    .child(date)
+                    .child(pushId);
+            meetingReference.setValue(meeting);
     }
 }
