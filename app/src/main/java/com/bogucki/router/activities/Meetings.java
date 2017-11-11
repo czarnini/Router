@@ -15,6 +15,7 @@ import android.view.View;
 import com.bogucki.router.R;
 import com.bogucki.router.Utils.ConstantValues;
 import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
+import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.models.Meeting;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -24,8 +25,6 @@ public class Meetings extends AppCompatActivity {
 
     private static final String TAG = Meetings.class.getSimpleName();
     private String formattedDate;
-    private RecyclerView meetingsList;
-    private DatabaseReference meetingsReference;
     FirebaseRecyclerAdapter mAdapter;
 
     @Override
@@ -37,42 +36,55 @@ public class Meetings extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         formattedDate = createDateFromExtras(extras);
-        setTitle(formattedDate.replaceAll("_", "."));
-
         attachFireBaseAdapter();
         handleFloatingButton();
+
+        setTitle(formattedDate.replaceAll("_", "."));
     }
 
-    private void attachFireBaseAdapter(){
-        meetingsReference = FirebaseDatabase.getInstance().getReference()
+    private void attachFireBaseAdapter() {
+        DatabaseReference meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
                 .child(formattedDate);
 
-        meetingsList = (RecyclerView) findViewById(R.id.meetings_list);
+        RecyclerView meetingsList = (RecyclerView) findViewById(R.id.meetings_list);
         meetingsList.setLayoutManager(new LinearLayoutManager(this));
 
-        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(Meeting.class, R.layout.meeting_list_item, MeetingHolder.class,meetingsReference){
+        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
+                Meeting.class,
+                R.layout.meeting_list_item,
+                MeetingHolder.class,
+                meetingsReference) {
             @Override
-            protected void populateViewHolder(MeetingHolder viewHolder, Meeting model, int position) {
+            protected void populateViewHolder(MeetingHolder viewHolder, final Meeting model, int position) {
                 viewHolder.setClient(model.getClient());
                 viewHolder.setAddress(model.getAddress());
                 viewHolder.setReason(model.getReason());
                 viewHolder.setDate(model.getEarliestTimeOfDelivery());
-                viewHolder.setPushId(model.getPushId());
 
-                viewHolder.setItemClickListener(new ItemClickListener() {
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view, int position) {
-
+                    public void onClick(View view) {
+                        DialogFragment dialogFragment = new ChooseActionForMeeting();
+                        Bundle args = new Bundle();
+                        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, model.getPushId());
+                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, model.getClient());
+                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
+                        args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
+                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                        dialogFragment.setArguments(args);
+                        dialogFragment.show(getSupportFragmentManager(), TAG);
                     }
                 });
+
             }
         };
         meetingsList.setAdapter(mAdapter);
     }
 
     private String createDateFromExtras(Bundle extras) {
-        if(null != extras) {
+        if (null != extras) {
             return extras.getString("day") + "_" + extras.getString("month") + "_" + extras.getString("year");
         } else {
             return "";
@@ -104,21 +116,20 @@ public class Meetings extends AppCompatActivity {
 
     private void handleFloatingButton() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
-                attachArgumentsForDialog(dialogFragment);
-                dialogFragment.show(getSupportFragmentManager(), TAG);
-            }
-        });
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
+                    Bundle args = new Bundle();
+                    args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
+                    args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                    dialogFragment.setArguments(args);
+                    dialogFragment.show(getSupportFragmentManager(), TAG);
+                }
+            });
+        }
     }
 
-    private void attachArgumentsForDialog(DialogFragment dialogFragment) {
-        Bundle args = new Bundle();
-        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
-        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
-        dialogFragment.setArguments(args);
-    }
 
 }

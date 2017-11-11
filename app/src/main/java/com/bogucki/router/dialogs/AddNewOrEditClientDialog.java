@@ -61,7 +61,7 @@ public class AddNewOrEditClientDialog extends DialogFragment {
 
                         clientsReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
                         if (action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE) {
-                            pushNewClientToDatabase(name, address);
+                            addNewClient(name, address);
                         } else {
                             updateClient(args.getString(ConstantValues.CLIENT_ID_BUNDLE_KEY), name, address);
                         }
@@ -79,7 +79,7 @@ public class AddNewOrEditClientDialog extends DialogFragment {
         return dialog;
     }
 
-    private void pushNewClientToDatabase(String name, String address) {
+    private void addNewClient(String name, String address) {
 
         if (!"".equals(name) && !"".equals(address)) {
             String pushId = clientsReference.push().getKey();
