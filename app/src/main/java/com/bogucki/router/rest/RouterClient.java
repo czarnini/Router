@@ -1,6 +1,5 @@
 package com.bogucki.router.rest;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.bogucki.router.models.Meeting;
@@ -25,7 +24,7 @@ public class RouterClient {
 
     public RouterClient() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.12")
+                .baseUrl("http://192.168.0.12:9000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -34,26 +33,9 @@ public class RouterClient {
 
     public void optimize(final DatabaseReference todayMeetings, final OptimizationListener listener) {
 
-        OptimizerRequest request = getOptimizerRequest(todayMeetings);
-
-        Call<OptimizerResponse> responseCall = routerAPI.optimize(request);
-        responseCall.enqueue(new Callback<OptimizerResponse>() {
-            @Override
-            public void onResponse(Call<OptimizerResponse> call, Response<OptimizerResponse> response) {
-                listener.onOptimizationDone();
-            }
-
-            @Override
-            public void onFailure(Call<OptimizerResponse> call, Throwable t) {
-                Log.e("Router Client ", "onFailure: ", t);
-            }
-        });
-    }
-
-    @NonNull
-    private OptimizerRequest getOptimizerRequest(DatabaseReference todayMeetings) {
         final OptimizerRequest request;
         request = new OptimizerRequest();
+
 
         todayMeetings.addValueEventListener(new ValueEventListener() {
             @Override
@@ -61,6 +43,21 @@ public class RouterClient {
                 for (DataSnapshot tmp : dataSnapshot.getChildren()) {
                     request.addNewMeeting(tmp.getValue(Meeting.class));
                 }
+                Call<OptimizerResponse> responseCall;
+                responseCall = routerAPI.optimize(request);
+
+
+                responseCall.enqueue(new Callback<OptimizerResponse>() {
+                    @Override
+                    public void onResponse(Call<OptimizerResponse> call, Response<OptimizerResponse> response) {
+                        listener.onOptimizationDone();
+                    }
+
+                    @Override
+                    public void onFailure(Call<OptimizerResponse> call, Throwable t) {
+                        Log.e("Router Client ", "onFailure: ", t);
+                    }
+                });
             }
 
             @Override
@@ -68,6 +65,8 @@ public class RouterClient {
                 Log.w("Router Client", "onCancelled: ", databaseError.toException());
             }
         });
-        return request;
+
     }
+
+
 }
