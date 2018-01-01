@@ -3,6 +3,7 @@ package com.bogucki.router.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.solver.widgets.Optimizer;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,11 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.bogucki.router.R;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
+import com.bogucki.router.rest.OptimizationListener;
+import com.bogucki.router.rest.RouterClient;
 import com.bogucki.router.utils.ConstantValues;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference meetingsReference;
     FirebaseRecyclerAdapter mAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private Button optimize;
 
     @Override
     protected void onDestroy() {
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         attachFireBaseAdapter();
+        addOptimizationListener();
     }
 
     @Override
@@ -67,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
     private void attachFireBaseAdapter() {
 
         meetingsReference = FirebaseDatabase.getInstance().getReference()
@@ -78,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         todayMeetings.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
-                Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference) {
+                Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference.orderByChild(ConstantValues.MEETING_ORDER)) {
             @Override
             protected void populateViewHolder(MeetingHolder viewHolder, final Meeting model, int position) {
                 viewHolder.setClient(model.getClient());
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         todayMeetings.setAdapter(mAdapter);
     }
 
+
     @NonNull
     private String getFormattedDate() {
         Calendar calendar = Calendar.getInstance();
@@ -116,6 +122,22 @@ public class MainActivity extends AppCompatActivity {
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         return "27_9_2017";
         //return day + "_" + month + "_" + year;
+    }
+
+    private void addOptimizationListener() {
+        optimize = (Button) findViewById(R.id.optimize_button);
+        optimize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RouterClient routerClient = new RouterClient();
+                routerClient.optimize(meetingsReference, new OptimizationListener() {
+                    @Override
+                    public void onOptimizationDone() {
+                        attachFireBaseAdapter();
+                    }
+                });
+            }
+        });
     }
 
 }
