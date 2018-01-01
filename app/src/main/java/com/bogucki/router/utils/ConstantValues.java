@@ -1,4 +1,4 @@
-package com.bogucki.router.Utils;
+package com.bogucki.router.utils;
 
 /**
  * Created by Michał Bogucki
@@ -25,4 +25,5 @@ public class ConstantValues {
     public static final String MEETING_DATE_BUNDLE_KEY                  = "meetingDate";
     public static final String MEETING_ID_BUNDLE_KEY                    = "meetingID";
     public static final String MEETING_REASON_BUNDLE_KEY                = "meetingReason";
+    public static final String MEETING_ORDER                            = "meetingOrder";
 }

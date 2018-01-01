@@ -8,17 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.bogucki.router.R;
-import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -99,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
                         args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
                         args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, getFormattedDate());
+                        args.putInt(ConstantValues.MEETING_ORDER, model.getMeetingOrder());
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getSupportFragmentManager(), TAG);
                     }
@@ -118,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         return "27_9_2017";
         //return day + "_" + month + "_" + year;
     }
-
-
 
 }
 
