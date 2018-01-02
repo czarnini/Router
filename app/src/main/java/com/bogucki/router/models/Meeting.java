@@ -1,6 +1,11 @@
 package com.bogucki.router.models;
 
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Michał Bogucki
  */
@@ -98,5 +103,19 @@ public class Meeting {
 
     public void setMeetingOrder(int meetingOrder) {
         this.meetingOrder = meetingOrder;
+    }
+
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("pushId",                   pushId);
+        result.put("client",                   client);
+        result.put("address",                  address);
+        result.put("reason",                   reason);
+        result.put("earliestTimeOfDelivery",   earliestTimeOfDelivery);
+        result.put("latestTimeOfDelivery",     latestTimeOfDelivery);
+        result.put("meetingOrder",             meetingOrder);
+        return result;
     }
 }

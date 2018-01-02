@@ -8,6 +8,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -45,12 +48,14 @@ public class RouterClient {
 
         final OptimizerRequest request;
         request = new OptimizerRequest();
+        final ArrayList<Meeting> meetings = new ArrayList<>();
 
 
         todayMeetings.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot tmp : dataSnapshot.getChildren()) {
+                    meetings.add(tmp.getValue(Meeting.class));
                     request.addNewMeeting(tmp.getValue(Meeting.class));
                 }
                 Call<OptimizerResponse> responseCall;
@@ -60,6 +65,14 @@ public class RouterClient {
                 responseCall.enqueue(new Callback<OptimizerResponse>() {
                     @Override
                     public void onResponse(Call<OptimizerResponse> call, Response<OptimizerResponse> response) {
+                        Map<String, Object> valuesToSend = new HashMap<>();
+                        ArrayList<Integer> result = response.body().getResult();
+                        for (int i = 0; i < result.size(); i++) {
+                            int newOrder = result.get(i);
+                            meetings.get(i).setMeetingOrder(newOrder);
+                            valuesToSend.put(meetings.get(i).getPushId(), meetings.get(i).toMap());
+                        }
+                        todayMeetings.updateChildren(valuesToSend);
                         listener.onOptimizationDone();
                     }
 
