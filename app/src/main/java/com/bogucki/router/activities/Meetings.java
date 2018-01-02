@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.models.Meeting;
@@ -73,6 +73,7 @@ public class Meetings extends AppCompatActivity {
                         args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
                         args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
                         args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                        args.putInt(ConstantValues.MEETING_ORDER, model.getMeetingOrder());
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getSupportFragmentManager(), TAG);
                     }

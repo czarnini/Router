@@ -1,9 +1,10 @@
 package com.bogucki.router.models;
 
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 
-import com.bogucki.router.Utils.ConstantValues;
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Michał Bogucki
@@ -11,24 +12,34 @@ import com.bogucki.router.Utils.ConstantValues;
 
 public class Meeting {
 
-
-    //TODO courierID?
     private String pushId;
     private String client;
     private String address;
     private String reason;
-    private String earliestTimeOfDelivery;
-    private String latestTimeOfDelivery;
+    private long earliestTimeOfDelivery;
+    private long latestTimeOfDelivery;
+    private int meetingOrder = -1;
 
 
     public Meeting(String pushId, String client, String address, String reason,
-                   String earliestTimeOfDelivery, String latestTimeOfDelivery) {
+                   long earliestTimeOfDelivery, long latestTimeOfDelivery) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
         this.reason = reason;
         this.earliestTimeOfDelivery = earliestTimeOfDelivery;
         this.latestTimeOfDelivery = latestTimeOfDelivery;
+        meetingOrder = -1;
+    }
+
+    public Meeting(String pushId, String client, String address, String reason, long earliestTimeOfDelivery, long latestTimeOfDelivery, int meetingOrder) {
+        this.pushId = pushId;
+        this.client = client;
+        this.address = address;
+        this.reason = reason;
+        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
+        this.latestTimeOfDelivery = latestTimeOfDelivery;
+        this.meetingOrder = meetingOrder;
     }
 
     public String getClient() {
@@ -56,19 +67,19 @@ public class Meeting {
         this.reason = reason;
     }
 
-    public String getEarliestTimeOfDelivery() {
+    public long getEarliestTimeOfDelivery() {
         return earliestTimeOfDelivery;
     }
 
-    public void setEarliestTimeOfDelivery(String earliestTimeOfDelivery) {
+    public void setEarliestTimeOfDelivery(long earliestTimeOfDelivery) {
         this.earliestTimeOfDelivery = earliestTimeOfDelivery;
     }
 
-    public String getLatestTimeOfDelivery() {
+    public long getLatestTimeOfDelivery() {
         return latestTimeOfDelivery;
     }
 
-    public void setLatestTimeOfDelivery(String latestTimeOfDelivery) {
+    public void setLatestTimeOfDelivery(long latestTimeOfDelivery) {
         this.latestTimeOfDelivery = latestTimeOfDelivery;
     }
 
@@ -86,5 +97,25 @@ public class Meeting {
         this.pushId = pushId;
     }
 
+    public int getMeetingOrder() {
+        return meetingOrder;
+    }
 
+    public void setMeetingOrder(int meetingOrder) {
+        this.meetingOrder = meetingOrder;
+    }
+
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("pushId",                   pushId);
+        result.put("client",                   client);
+        result.put("address",                  address);
+        result.put("reason",                   reason);
+        result.put("earliestTimeOfDelivery",   earliestTimeOfDelivery);
+        result.put("latestTimeOfDelivery",     latestTimeOfDelivery);
+        result.put("meetingOrder",             meetingOrder);
+        return result;
+    }
 }

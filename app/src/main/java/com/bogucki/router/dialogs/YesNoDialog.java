@@ -10,7 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

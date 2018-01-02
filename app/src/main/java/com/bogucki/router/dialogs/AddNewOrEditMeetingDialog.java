@@ -3,8 +3,6 @@ package com.bogucki.router.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -13,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 import com.bogucki.router.models.Meeting;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +31,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private TextView reasonTV;
     private String pushId;
     private int action;
+    private int meetingOrder = -1;
 
 
     @NonNull
@@ -66,7 +63,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 address = addressTV.getText().toString(),
                                 reason = reasonTV.getText().toString(),
                                 date = dateTV.getText().toString().replaceAll("\\.", "_");
-                        Meeting meeting = new Meeting(pushId, client, address, reason, "TMP", "TMP2");
+                        Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder);
 
                         if (!"".equals(meeting.getClient()) && !"".equals(meeting.getAddress()) && !"".equals(meeting.getAddress()) && !"".equals(date)) {
                             if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
@@ -101,6 +98,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     }
 
     private void handleEditing(Bundle args) {
+        meetingOrder = args.getInt(ConstantValues.MEETING_ORDER);
         handleNewMeetingFromMeeting(args);
         handleNewMeetingFromClient(args);
         reasonTV.setText(args.getString(ConstantValues.MEETING_REASON_BUNDLE_KEY));
@@ -132,6 +130,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                     .child(ConstantValues.MEETINGS_FIREBASE)
                     .child(date);
             String pushId = meetingReference.push().getKey();
+            meeting.setPushId(pushId);
             meetingReference.child(pushId).setValue(meeting);
     }
 

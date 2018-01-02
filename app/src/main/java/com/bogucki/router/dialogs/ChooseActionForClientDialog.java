@@ -9,7 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 
 /**
  * Created by Michał Bogucki
