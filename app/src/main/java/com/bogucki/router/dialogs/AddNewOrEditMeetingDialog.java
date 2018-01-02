@@ -63,7 +63,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 address = addressTV.getText().toString(),
                                 reason = reasonTV.getText().toString(),
                                 date = dateTV.getText().toString().replaceAll("\\.", "_");
-                        Meeting meeting = new Meeting(pushId, client, address, reason, "TMP", "TMP2", meetingOrder);
+                        Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder);
 
                         if (!"".equals(meeting.getClient()) && !"".equals(meeting.getAddress()) && !"".equals(meeting.getAddress()) && !"".equals(date)) {
                             if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {

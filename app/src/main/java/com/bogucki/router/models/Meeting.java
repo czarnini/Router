@@ -11,13 +11,13 @@ public class Meeting {
     private String client;
     private String address;
     private String reason;
-    private String earliestTimeOfDelivery;
-    private String latestTimeOfDelivery;
+    private long earliestTimeOfDelivery;
+    private long latestTimeOfDelivery;
     private int meetingOrder = -1;
 
 
     public Meeting(String pushId, String client, String address, String reason,
-                   String earliestTimeOfDelivery, String latestTimeOfDelivery) {
+                   long earliestTimeOfDelivery, long latestTimeOfDelivery) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
@@ -27,7 +27,7 @@ public class Meeting {
         meetingOrder = -1;
     }
 
-    public Meeting(String pushId, String client, String address, String reason, String earliestTimeOfDelivery, String latestTimeOfDelivery, int meetingOrder) {
+    public Meeting(String pushId, String client, String address, String reason, long earliestTimeOfDelivery, long latestTimeOfDelivery, int meetingOrder) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
@@ -62,19 +62,19 @@ public class Meeting {
         this.reason = reason;
     }
 
-    public String getEarliestTimeOfDelivery() {
+    public long getEarliestTimeOfDelivery() {
         return earliestTimeOfDelivery;
     }
 
-    public void setEarliestTimeOfDelivery(String earliestTimeOfDelivery) {
+    public void setEarliestTimeOfDelivery(long earliestTimeOfDelivery) {
         this.earliestTimeOfDelivery = earliestTimeOfDelivery;
     }
 
-    public String getLatestTimeOfDelivery() {
+    public long getLatestTimeOfDelivery() {
         return latestTimeOfDelivery;
     }
 
-    public void setLatestTimeOfDelivery(String latestTimeOfDelivery) {
+    public void setLatestTimeOfDelivery(long latestTimeOfDelivery) {
         this.latestTimeOfDelivery = latestTimeOfDelivery;
     }
 

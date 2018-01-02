@@ -22,12 +22,12 @@ class OptimizerRequest {
 
     private class MiniMeeting {
         private String address;
-        private String ETP;
-        private String LTP;
+        private long ETP;
+        private long LTP;
 
 
 
-        public MiniMeeting(String address, String ETP, String LTP) {
+        public MiniMeeting(String address, long ETP, long LTP) {
             this.address = address;
             this.ETP = ETP;
             this.LTP = LTP;

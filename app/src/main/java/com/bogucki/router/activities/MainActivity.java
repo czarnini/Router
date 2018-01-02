@@ -3,7 +3,6 @@ package com.bogucki.router.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Optimizer;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         String month = String.valueOf(calendar.get(Calendar.MONTH) +1 ); // because January is 0
         String year = String.valueOf(calendar.get(Calendar.YEAR));
-        return "27_9_2017";
+        return "27_10_2017";
         //return day + "_" + month + "_" + year;
     }
 

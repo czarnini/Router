@@ -48,8 +48,8 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
         reasonTV.setText(reason);
     }
 
-    public void setDate(String date) {
-        dateTV.setText(date);
+    public void setDate(long date) {
+        dateTV.setText("FOOOO1");
     }
 
 
