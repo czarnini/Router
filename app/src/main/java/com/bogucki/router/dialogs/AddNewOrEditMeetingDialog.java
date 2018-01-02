@@ -130,6 +130,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                     .child(ConstantValues.MEETINGS_FIREBASE)
                     .child(date);
             String pushId = meetingReference.push().getKey();
+            meeting.setPushId(pushId);
             meetingReference.child(pushId).setValue(meeting);
     }
 

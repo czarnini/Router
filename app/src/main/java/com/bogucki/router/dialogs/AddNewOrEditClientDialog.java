@@ -61,6 +61,8 @@ public class AddNewOrEditClientDialog extends DialogFragment {
                         if (action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE) {
                             addNewClient();
                         } else {
+                            name = nameET.getText().toString();
+                            address = addressET.getText().toString();
                             updateClient(args.getString(ConstantValues.CLIENT_ID_BUNDLE_KEY), name, address);
                         }
 
