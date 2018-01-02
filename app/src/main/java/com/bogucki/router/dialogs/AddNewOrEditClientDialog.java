@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.bogucki.router.R;
-import com.bogucki.router.Utils.ConstantValues;
+import com.bogucki.router.utils.ConstantValues;
 import com.bogucki.router.models.Client;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,9 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 public class AddNewOrEditClientDialog extends DialogFragment {
 
     private DatabaseReference clientsReference;
-    EditText nameET;
-    EditText addressET;
-
+    private EditText nameET;
+    private EditText addressET;
+    private String name;
+    private String address;
 
 
     @NonNull
@@ -44,8 +45,8 @@ public class AddNewOrEditClientDialog extends DialogFragment {
         addressET = (EditText) rootView.findViewById(R.id.client_address_ET);
 
         if(action == ConstantValues.EDIT_CLIENT_BUNDLE_VALUE){
-            String name = args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY);
-            String address = args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY);
+            name = args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY);
+            address = args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY);
 
             nameET.setText(name);
             addressET.setText(address);
@@ -56,13 +57,12 @@ public class AddNewOrEditClientDialog extends DialogFragment {
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        String name = nameET.getText().toString();
-                        String address = addressET.getText().toString();
-
                         clientsReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
                         if (action == ConstantValues.ADD_CLIENT_BUNDLE_VALUE) {
-                            pushNewClientToDatabase(name, address);
+                            addNewClient();
                         } else {
+                            name = nameET.getText().toString();
+                            address = addressET.getText().toString();
                             updateClient(args.getString(ConstantValues.CLIENT_ID_BUNDLE_KEY), name, address);
                         }
 
@@ -79,7 +79,7 @@ public class AddNewOrEditClientDialog extends DialogFragment {
         return dialog;
     }
 
-    private void pushNewClientToDatabase(String name, String address) {
+    private void addNewClient() {
 
         if (!"".equals(name) && !"".equals(address)) {
             String pushId = clientsReference.push().getKey();

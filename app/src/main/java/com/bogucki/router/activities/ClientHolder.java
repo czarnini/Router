@@ -13,15 +13,12 @@ import com.bogucki.router.R;
 public class ClientHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final TextView nameTV;
     private final TextView addressTV;
-    private final TextView idTv;
-
     private ItemClickListener itemClickListener;
 
     public ClientHolder(View itemView) {
         super(itemView);
         nameTV = (TextView) itemView.findViewById(R.id.client_name);
         addressTV = (TextView) itemView.findViewById(R.id.client_address);
-        idTv = (TextView) itemView.findViewById(R.id.push_id);
         itemView.setOnClickListener(this);
     }
 
@@ -43,7 +40,4 @@ public class ClientHolder extends RecyclerView.ViewHolder implements View.OnClic
         addressTV.setText(address);
     }
 
-    public void setPushId(String pushId) {
-        idTv.setText(pushId);
-    }
 }

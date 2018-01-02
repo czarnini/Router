@@ -103,12 +103,13 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/optimize_button"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
-                        android:text="Więcej"
+                        android:text="Zacznij dzień"
                         android:textColor="@android:color/white"/>
 
                     <Button
@@ -117,7 +118,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
-                        android:text="Zakończ"
+                        android:text="Następny punkt"
                         android:textColor="@android:color/white"/>
                 </LinearLayout>
 

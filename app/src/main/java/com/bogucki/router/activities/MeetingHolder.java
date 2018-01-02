@@ -3,7 +3,6 @@ package com.bogucki.router.activities;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-
 import com.bogucki.router.R;
 
 /**
@@ -16,18 +15,14 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     private final TextView addressTV;
     private final TextView reasonTV;
     private final TextView dateTV;
-    private final TextView idTV;
-
     private ItemClickListener itemClickListener;
 
     public MeetingHolder(View itemView) {
         super(itemView);
-
-        reasonTV = (TextView) itemView.findViewById(R.id.meeting_reason);
-        clientTV = (TextView) itemView.findViewById(R.id.client_name);
+        reasonTV  = (TextView) itemView.findViewById(R.id.meeting_reason);
+        clientTV  = (TextView) itemView.findViewById(R.id.client_name);
         addressTV = (TextView) itemView.findViewById(R.id.client_address);
-        dateTV = (TextView) itemView.findViewById(R.id.closest_term);
-        idTV = (TextView) itemView.findViewById(R.id.push_id);
+        dateTV    = (TextView) itemView.findViewById(R.id.closest_term);
     }
 
 
@@ -53,13 +48,10 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
         reasonTV.setText(reason);
     }
 
-    public void setDate(String date) {
-        dateTV.setText(date);
+    public void setDate(long date) {
+        dateTV.setText("FOOOO1");
     }
 
-    public void setPushId(String pushId) {
-        idTV.setText(pushId);
-    }
 
 
 }

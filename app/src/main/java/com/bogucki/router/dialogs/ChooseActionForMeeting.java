@@ -15,47 +15,41 @@ import com.bogucki.router.utils.ConstantValues;
  * Created by Michał Bogucki
  */
 
-public class ChooseActionForClientDialog extends DialogFragment {
+public class ChooseActionForMeeting extends DialogFragment {
 
 
-    private static final String TAG = ChooseActionForClientDialog.class.getSimpleName();
+    private static final String TAG = ChooseActionForMeeting.class.getSimpleName();
 
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateDialog: Dialog created");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setItems(R.array.choose_action_for_client, new DialogInterface.OnClickListener() {
+        builder.setItems(R.array.choose_action_for_meeting, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DialogFragment dialogFragment;
 
                 Bundle args = getArguments();
                 switch (which) {
-                    case 0: //New meeting
-                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.CLIENTS_FIREBASE);
+                    case 0: //Edit
                         dialogFragment = new AddNewOrEditMeetingDialog();
-                        dialogFragment.setArguments(args);
-                        dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
-                        break;
-
-
-                    case 1: //Edit
-                        dialogFragment = new AddNewOrEditClientDialog();
                         args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
-                                ConstantValues.EDIT_CLIENT_BUNDLE_VALUE);
+                                ConstantValues.EDIT_MEETING_BUNDLE_VALUE);
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
                         break;
-                    case 2: //Remove
+                    case 1: //Remove
                         dialogFragment = new YesNoDialog();
                         args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
-                                ConstantValues.REMOVE_CLIENT_BUNDLE_VALUE);
+                                ConstantValues.REMOVE_MEETING_BUNDLE_VALUE);
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
+                        break;
 
                     default:
-                        Log.d(TAG, "onClick: wrong index selected!");
+                        Log.d(TAG, "onClick: wrong index selected! " + which);
                         break;
                 }
             }
