@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
         String month = String.valueOf(calendar.get(Calendar.MONTH) +1 ); // because January is 0
         String year = String.valueOf(calendar.get(Calendar.YEAR));
-        return "27_10_2017";
+        return "2_1_2018";
         //return day + "_" + month + "_" + year;
     }
 
