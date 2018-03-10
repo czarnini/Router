@@ -1,11 +1,13 @@
 package com.bogucki.router.rest;
 
 import android.util.Log;
+import android.util.Pair;
 
 import com.bogucki.router.models.Meeting;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -46,8 +48,7 @@ public class RouterClient {
 
     public void optimize(final DatabaseReference todayMeetings, final OptimizationListener listener) {
 
-        final OptimizerRequest request;
-        request = new OptimizerRequest();
+        final OptimizerRequest request = new OptimizerRequest();
         final ArrayList<Meeting> meetings = new ArrayList<>();
 
 
@@ -89,6 +90,12 @@ public class RouterClient {
             }
         });
 
+    }
+
+    public void optimizeWithFirebase(final DatabaseReference todayMeetings){
+        String key = todayMeetings.getKey();
+        DatabaseReference requests = FirebaseDatabase.getInstance().getReference().child("requests").child(key);
+        requests.setValue(true);
     }
 
 

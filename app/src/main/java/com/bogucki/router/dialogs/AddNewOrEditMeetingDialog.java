@@ -113,6 +113,9 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private void handleNewMeetingFromClient(Bundle args) {
         nameTV.setQuery(args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY), false);
         addressTV.setText(args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY));
+        reasonTV.setText("Spotkanie");
+        dateTV.setText("2.1.2018");
+
     }
 
 

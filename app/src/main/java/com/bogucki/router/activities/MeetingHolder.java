@@ -49,7 +49,7 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     }
 
     public void setDate(long date) {
-        dateTV.setText("FOOOO1");
+        dateTV.setText("");
     }
 
 
