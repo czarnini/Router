@@ -47,7 +47,7 @@ public class Clients extends AppCompatActivity {
     //TODO -> divider 80dp transparent
     private void attachFireBaseAdapter(String name) {
         Log.d(TAG, "attachFireBaseAdapter: " + name);
-        clientsList = (RecyclerView) findViewById(R.id.clientRecycler);
+        clientsList = findViewById(R.id.clientRecycler);
         clientsList.setLayoutManager(new LinearLayoutManager(this));
         databaseReference = FirebaseDatabase.getInstance().getReference().child(ConstantValues.CLIENTS_FIREBASE);
         Query query;
@@ -143,7 +143,5 @@ public class Clients extends AppCompatActivity {
         });
         return true;
     }
-
-
 
 }

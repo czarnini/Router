@@ -7,9 +7,7 @@
               android:padding="8dp">
 
 
-    <android.support.v7.widget.SearchView
-        app:iconifiedByDefault="false"
-        app:searchIcon="@null"
+    <AutoCompleteTextView
         android:id="@+id/client_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

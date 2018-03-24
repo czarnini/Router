@@ -3,7 +3,7 @@
     <string name="title_activity_main">Następne spotkanie:</string>
     <string name="title_activity_clients">Klienci</string>
     <string name="title_activity_meetings">Spotkania</string>
-    <string name="ClientName">Nazwa klienta</string>
+    <string name="ClientName">Klient</string>
     <string name="address">Adres</string>
     <string name="new_client">Nowy klient</string>
     <string name="confirm">Czy na pewno usunąć wpis?</string>

@@ -59,4 +59,9 @@ public class Client {
         result.put("address", address);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
