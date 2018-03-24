@@ -17,7 +17,6 @@ import com.bogucki.router.R;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
-import com.bogucki.router.rest.OptimizationListener;
 import com.bogucki.router.rest.RouterClient;
 import com.bogucki.router.utils.ConstantValues;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private String getFormattedDate() {
         Calendar calendar = Calendar.getInstance();
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String month = String.valueOf(calendar.get(Calendar.MONTH) +1 ); // because January is 0
+        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1); // because January is 0
         String year = String.valueOf(calendar.get(Calendar.YEAR));
         return "2_1_2018";
         //return day + "_" + month + "_" + year;
@@ -129,12 +128,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 RouterClient routerClient = new RouterClient();
-                routerClient.optimize(meetingsReference, new OptimizationListener() {
+/*                routerClient.optimize(meetingsReference, new OptimizationListener() {
                     @Override
                     public void onOptimizationDone() {
                         attachFireBaseAdapter();
                     }
-                });
+                });*/
+
+                routerClient.optimizeWithFirebase(meetingsReference);
             }
         });
     }
