@@ -17,7 +17,7 @@ class OptimizerRequest {
     }
 
     public void addNewMeeting(Meeting baseMeeting){
-        meetings.add(new MiniMeeting(baseMeeting.getAddress(), baseMeeting.getEarliestTimeOfDelivery(), baseMeeting.getLatestTimeOfDelivery()));
+        meetings.add(new MiniMeeting(baseMeeting.getAddress(), baseMeeting.getEarliestTimePossible(), baseMeeting.getLatestTimePossible()));
     }
 
     private class MiniMeeting {

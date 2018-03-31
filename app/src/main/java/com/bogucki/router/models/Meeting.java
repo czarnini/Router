@@ -16,29 +16,29 @@ public class Meeting {
     private String client;
     private String address;
     private String reason;
-    private long earliestTimeOfDelivery;
-    private long latestTimeOfDelivery;
+    private long earliestTimePossible;
+    private long latestTimePossible;
     private int meetingOrder = -1;
 
 
     public Meeting(String pushId, String client, String address, String reason,
-                   long earliestTimeOfDelivery, long latestTimeOfDelivery) {
+                   long earliestTimePossible, long latestTimePossible) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
         this.reason = reason;
-        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
-        this.latestTimeOfDelivery = latestTimeOfDelivery;
+        this.earliestTimePossible = earliestTimePossible;
+        this.latestTimePossible = latestTimePossible;
         meetingOrder = -1;
     }
 
-    public Meeting(String pushId, String client, String address, String reason, long earliestTimeOfDelivery, long latestTimeOfDelivery, int meetingOrder) {
+    public Meeting(String pushId, String client, String address, String reason, long earliestTimePossible, long latestTimePossible, int meetingOrder) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
         this.reason = reason;
-        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
-        this.latestTimeOfDelivery = latestTimeOfDelivery;
+        this.earliestTimePossible = earliestTimePossible;
+        this.latestTimePossible = latestTimePossible;
         this.meetingOrder = meetingOrder;
     }
 
@@ -67,20 +67,20 @@ public class Meeting {
         this.reason = reason;
     }
 
-    public long getEarliestTimeOfDelivery() {
-        return earliestTimeOfDelivery;
+    public long getEarliestTimePossible() {
+        return earliestTimePossible;
     }
 
-    public void setEarliestTimeOfDelivery(long earliestTimeOfDelivery) {
-        this.earliestTimeOfDelivery = earliestTimeOfDelivery;
+    public void setEarliestTimePossible(long earliestTimePossible) {
+        this.earliestTimePossible = earliestTimePossible;
     }
 
-    public long getLatestTimeOfDelivery() {
-        return latestTimeOfDelivery;
+    public long getLatestTimePossible() {
+        return latestTimePossible;
     }
 
-    public void setLatestTimeOfDelivery(long latestTimeOfDelivery) {
-        this.latestTimeOfDelivery = latestTimeOfDelivery;
+    public void setLatestTimePossible(long latestTimePossible) {
+        this.latestTimePossible = latestTimePossible;
     }
 
 
@@ -106,6 +106,7 @@ public class Meeting {
     }
 
 
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -113,8 +114,8 @@ public class Meeting {
         result.put("client",                   client);
         result.put("address",                  address);
         result.put("reason",                   reason);
-        result.put("earliestTimeOfDelivery",   earliestTimeOfDelivery);
-        result.put("latestTimeOfDelivery",     latestTimeOfDelivery);
+        result.put("earliestTimePossible", earliestTimePossible);
+        result.put("latestTimePossible", latestTimePossible);
         result.put("meetingOrder",             meetingOrder);
         return result;
     }

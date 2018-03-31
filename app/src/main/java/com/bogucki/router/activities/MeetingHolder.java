@@ -19,10 +19,10 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     public MeetingHolder(View itemView) {
         super(itemView);
-        reasonTV  = (TextView) itemView.findViewById(R.id.meeting_reason);
-        clientTV  = (TextView) itemView.findViewById(R.id.client_name);
-        addressTV = (TextView) itemView.findViewById(R.id.client_address);
-        dateTV    = (TextView) itemView.findViewById(R.id.closest_term);
+        reasonTV  = itemView.findViewById(R.id.meeting_reason);
+        clientTV  = itemView.findViewById(R.id.client_name);
+        addressTV = itemView.findViewById(R.id.client_address);
+        dateTV    = itemView.findViewById(R.id.closest_term);
     }
 
 
@@ -51,6 +51,9 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     public void setDate(long date) {
         dateTV.setText("");
     }
+
+
+
 
 
 

@@ -8,27 +8,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import com.bogucki.router.R;
-import com.bogucki.router.dialogs.ChooseActionForMeeting;
+import com.bogucki.router.adapters.MeetingItemTouchHelperCallback;
+import com.bogucki.router.adapters.MeetingsAdapter;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
-import com.bogucki.router.rest.RouterClient;
 import com.bogucki.router.utils.ConstantValues;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView todayMeetings;
+    private RecyclerView todayMeetingsView;
+    private ArrayList<Meeting> todayMeetings = new ArrayList<>();
     private DatabaseReference meetingsReference;
+
+    MeetingsAdapter mAdapter2;
     FirebaseRecyclerAdapter mAdapter;
+
     private static final String TAG = MainActivity.class.getSimpleName();
     private Button optimize;
 
@@ -45,7 +55,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         attachFireBaseAdapter();
-        addOptimizationListener();
+        handleOptimizeButton();
+
+        meetingsReference.orderByChild(ConstantValues.MEETING_ORDER).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                todayMeetings.clear();
+                for (DataSnapshot meeting : dataSnapshot.getChildren()) {
+                    todayMeetings.add(meeting.getValue(Meeting.class));
+                }
+                mAdapter2.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
@@ -76,39 +103,13 @@ public class MainActivity extends AppCompatActivity {
         meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
                 .child(getFormattedDate());
-
-        todayMeetings = (RecyclerView) findViewById(R.id.today_meetings);
-        todayMeetings.setLayoutManager(new LinearLayoutManager(this));
-
-        mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
-                Meeting.class, R.layout.meeting_list_item, MeetingHolder.class, meetingsReference.orderByChild(ConstantValues.MEETING_ORDER)) {
-            @Override
-            protected void populateViewHolder(MeetingHolder viewHolder, final Meeting model, int position) {
-                viewHolder.setClient(model.getClient());
-                viewHolder.setAddress(model.getAddress());
-                viewHolder.setReason(model.getReason());
-                viewHolder.setDate(model.getEarliestTimeOfDelivery());
-
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DialogFragment dialogFragment = new ChooseActionForMeeting();
-                        Bundle args = new Bundle();
-                        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, model.getPushId());
-                        args.putString(ConstantValues.CLIENT_NAME_BUNDLE_KEY, model.getClient());
-                        args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
-                        args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
-                        args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
-                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, getFormattedDate());
-                        args.putInt(ConstantValues.MEETING_ORDER, model.getMeetingOrder());
-                        dialogFragment.setArguments(args);
-                        dialogFragment.show(getSupportFragmentManager(), TAG);
-                    }
-                });
-            }
-        };
-
-        todayMeetings.setAdapter(mAdapter);
+        todayMeetingsView = findViewById(R.id.today_meetings);
+        todayMeetingsView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter2 = new MeetingsAdapter(todayMeetings, getSupportFragmentManager());
+        ItemTouchHelper.Callback callback = new MeetingItemTouchHelperCallback(mAdapter2);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(todayMeetingsView);
+        todayMeetingsView.setAdapter(mAdapter2);
     }
 
 
@@ -122,20 +123,14 @@ public class MainActivity extends AppCompatActivity {
         //return day + "_" + month + "_" + year;
     }
 
-    private void addOptimizationListener() {
-        optimize = (Button) findViewById(R.id.optimize_button);
+    private void handleOptimizeButton() {
+        optimize = findViewById(R.id.optimize_button);
         optimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RouterClient routerClient = new RouterClient();
-/*                routerClient.optimize(meetingsReference, new OptimizationListener() {
-                    @Override
-                    public void onOptimizationDone() {
-                        attachFireBaseAdapter();
-                    }
-                });*/
-
-                routerClient.optimizeWithFirebase(meetingsReference);
+                String key = meetingsReference.getKey();
+                DatabaseReference requests = FirebaseDatabase.getInstance().getReference().child("requests").child(key);
+                requests.setValue(true);
             }
         });
     }
