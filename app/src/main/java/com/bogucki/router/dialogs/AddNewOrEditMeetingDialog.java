@@ -151,7 +151,6 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
 
     }
 
-
     /**
      * Action of adding new meeting was invoked from Meetings activity
      *

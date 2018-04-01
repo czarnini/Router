@@ -2,14 +2,12 @@ package com.bogucki.router.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +19,6 @@ import com.bogucki.router.adapters.MeetingsAdapter;
 import com.bogucki.router.dialogs.DatePickerFragment;
 import com.bogucki.router.models.Meeting;
 import com.bogucki.router.utils.ConstantValues;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,31 +29,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView todayMeetingsView;
     private ArrayList<Meeting> todayMeetings = new ArrayList<>();
     private DatabaseReference meetingsReference;
 
-    MeetingsAdapter mAdapter2;
-    FirebaseRecyclerAdapter mAdapter;
+    MeetingsAdapter mAdapter;
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private Button optimize;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAdapter.cleanup();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         attachFireBaseAdapter();
+        registerListenerForMeetings();
         handleOptimizeButton();
 
+    }
+
+    private void registerListenerForMeetings() {
         meetingsReference.orderByChild(ConstantValues.MEETING_ORDER).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -64,15 +61,14 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot meeting : dataSnapshot.getChildren()) {
                     todayMeetings.add(meeting.getValue(Meeting.class));
                 }
-                mAdapter2.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // TODO: 01.04.2018 Handle error
             }
         });
-
     }
 
     @Override
@@ -99,21 +95,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void attachFireBaseAdapter() {
-
         meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
                 .child(getFormattedDate());
-        todayMeetingsView = findViewById(R.id.today_meetings);
+        RecyclerView todayMeetingsView = findViewById(R.id.meeting_list);
         todayMeetingsView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter2 = new MeetingsAdapter(todayMeetings, getSupportFragmentManager());
-        ItemTouchHelper.Callback callback = new MeetingItemTouchHelperCallback(mAdapter2);
+        mAdapter = new MeetingsAdapter(todayMeetings, getSupportFragmentManager());
+        ItemTouchHelper.Callback callback = new MeetingItemTouchHelperCallback(mAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(todayMeetingsView);
-        todayMeetingsView.setAdapter(mAdapter2);
+        todayMeetingsView.setAdapter(mAdapter);
     }
 
 
-    @NonNull
+
+    //TODO extract this to Utilis package
     private String getFormattedDate() {
         Calendar calendar = Calendar.getInstance();
         String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
@@ -124,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleOptimizeButton() {
-        optimize = findViewById(R.id.optimize_button);
+        Button optimize = findViewById(R.id.optimize_button);
         optimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
