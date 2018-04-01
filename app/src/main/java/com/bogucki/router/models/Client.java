@@ -2,6 +2,7 @@ package com.bogucki.router.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by Michał Bogucki
@@ -63,5 +64,10 @@ public class Client {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Client && (((Client) obj).getAddress().equals(address) && ((Client) obj).getName().equals(name));
     }
 }

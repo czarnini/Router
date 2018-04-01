@@ -72,6 +72,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
             }
         });
 
+
         nameTV.setAdapter(clientAutocompleteArrayAdapter);
 
         nameTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,7 +99,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 date = dateTV.getText().toString().replaceAll("\\.", "_");
                         Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder);
 
-                        if (!"".equals(meeting.getAddress()) && !"".equals(meeting.getReason()) && !"".equals(date)) {
+                        if ( clientAutocompleteArrayAdapter.getPosition(new Client(client, address)) != -1&& !"".equals(meeting.getReason()) && !"".equals(date)) {
                             if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
                                 editMeeting(meeting, date);
                             } else {
