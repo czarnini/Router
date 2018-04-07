@@ -24,7 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Meetings extends AppCompatActivity {
 
     private static final String TAG = Meetings.class.getSimpleName();
-    private String formattedDate;
+    private String UIDate;
+    private String DBDate;
     FirebaseRecyclerAdapter mAdapter;
 
     @Override
@@ -35,19 +36,22 @@ public class Meetings extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        formattedDate = createDateFromExtras(extras);
+        if (extras != null) {
+            UIDate = extras.getString(ConstantValues.MEETING_DATE_BUNDLE_KEY);
+            DBDate = UIDate.replaceAll("\\.","_");
+        }
         attachFireBaseAdapter();
         handleFloatingButton();
 
-        setTitle(formattedDate.replaceAll("_", "."));
+        setTitle(UIDate);
     }
 
     private void attachFireBaseAdapter() {
         DatabaseReference meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
-                .child(formattedDate);
+                .child(DBDate);
 
-        RecyclerView meetingsList = (RecyclerView) findViewById(R.id.meetings_list);
+        RecyclerView meetingsList = findViewById(R.id.meetings_list);
         meetingsList.setLayoutManager(new LinearLayoutManager(this));
 
         mAdapter = new FirebaseRecyclerAdapter<Meeting, MeetingHolder>(
@@ -72,7 +76,7 @@ public class Meetings extends AppCompatActivity {
                         args.putString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY, model.getAddress());
                         args.putString(ConstantValues.MEETING_REASON_BUNDLE_KEY, model.getReason());
                         args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
-                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, DBDate);
                         args.putInt(ConstantValues.MEETING_ORDER, model.getMeetingOrder());
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getSupportFragmentManager(), TAG);
@@ -84,13 +88,7 @@ public class Meetings extends AppCompatActivity {
         meetingsList.setAdapter(mAdapter);
     }
 
-    private String createDateFromExtras(Bundle extras) {
-        if (null != extras) {
-            return extras.getString("day") + "_" + extras.getString("month") + "_" + extras.getString("year");
-        } else {
-            return "";
-        }
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -124,7 +122,7 @@ public class Meetings extends AppCompatActivity {
                     DialogFragment dialogFragment = new AddNewOrEditMeetingDialog();
                     Bundle args = new Bundle();
                     args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
-                    args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, formattedDate);
+                    args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, UIDate);
                     dialogFragment.setArguments(args);
                     dialogFragment.show(getSupportFragmentManager(), TAG);
                 }

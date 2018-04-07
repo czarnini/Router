@@ -35,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 /**
  * Created by Michał Bogucki
  */
@@ -137,6 +139,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 handleReasonColor(getResources().getColor(R.color.colorAccent));
                             }
                         } else {
+                            date = date.replaceAll("\\.","_");
                             if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
                                 editMeeting(meeting, date);
                             } else {
@@ -228,8 +231,9 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private void handleNewMeetingFromClient(Bundle args) {
         nameTV.setText(args.getString(ConstantValues.CLIENT_NAME_BUNDLE_KEY), false);
         addressTV.setText(args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY));
-        reasonTV.setText("Spotkanie");
-        dateTV.setText("2.1.2018");
+        reasonTV.requestFocus();
+        Calendar c = Calendar.getInstance();
+        dateTV.setText(String.format("%02d.%02d.%02d", c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR)));
 
     }
 

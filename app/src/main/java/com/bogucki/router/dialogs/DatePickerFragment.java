@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.bogucki.router.activities.Meetings;
+import com.bogucki.router.utils.ConstantValues;
 
 import java.util.Calendar;
 
@@ -39,12 +40,10 @@ public class DatePickerFragment  extends DialogFragment implements DatePickerDia
 
         if(calledFromMainActivity) {
             Intent intent = new Intent(getContext(), Meetings.class);
-            intent.putExtra("day", String.valueOf(day));
-            intent.putExtra("month", String.valueOf(month + 1)); //because for some reason January == 0
-            intent.putExtra("year", String.valueOf(year));
+            intent.putExtra(ConstantValues.MEETING_DATE_BUNDLE_KEY, String.format("%02d.%02d.%02d", day,month+1,year));
             startActivity(intent);
         } else{
-            time.setText(String.format("%02d.%02d.%02d", day,month,year));
+            time.setText(String.format("%02d.%02d.%02d", day,month+1,year));
         }
 
     }
