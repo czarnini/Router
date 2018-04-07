@@ -6,7 +6,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
 import com.bogucki.router.activities.Meetings;
 
@@ -17,6 +19,9 @@ import java.util.Calendar;
  */
 
 public class DatePickerFragment  extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    private boolean calledFromMainActivity = false;
+    private EditText time;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -31,11 +36,24 @@ public class DatePickerFragment  extends DialogFragment implements DatePickerDia
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Intent intent = new Intent(getContext(), Meetings.class);
-        intent.putExtra("day", String.valueOf(day));
-        intent.putExtra("month", String.valueOf(month+1)); //because for some reason January == 0
-        intent.putExtra("year", String.valueOf(year));
-        startActivity(intent);
 
+        if(calledFromMainActivity) {
+            Intent intent = new Intent(getContext(), Meetings.class);
+            intent.putExtra("day", String.valueOf(day));
+            intent.putExtra("month", String.valueOf(month + 1)); //because for some reason January == 0
+            intent.putExtra("year", String.valueOf(year));
+            startActivity(intent);
+        } else{
+            time.setText(String.format("%02d.%02d.%02d", day,month,year));
+        }
+
+    }
+
+    public void isCalledFromMainActivity() {
+        calledFromMainActivity = true;
+    }
+
+    public void setTime(EditText time){
+        this.time = time;
     }
 }

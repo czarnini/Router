@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.meetings_option: {
-                DialogFragment newFragment = new DatePickerFragment();
+                DatePickerFragment newFragment = new DatePickerFragment();
+                newFragment.isCalledFromMainActivity();
                 newFragment.show(getSupportFragmentManager(), TAG);
                 break;
             }
