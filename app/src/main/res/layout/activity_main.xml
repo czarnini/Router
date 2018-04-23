@@ -102,24 +102,6 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/optimize_button"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimaryDark"
-                        android:text="Wylicz trasę"
-                        android:textColor="@android:color/white"/>
-
-<!--                    <Button
-                        android:id="@+id/button"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimaryDark"
-                        android:text="Następny punkt"
-                        android:textColor="@android:color/white"/>-->
                 </LinearLayout>
 
             </LinearLayout>
@@ -137,12 +119,12 @@
             android:clipToPadding="false"/>
     </LinearLayout>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:backgroundTint="@color/colorAccent"-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:srcCompat="@drawable/ic_add_black_24dp"/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:backgroundTint="@color/colorAccent"
+        android:id="@+id/optimize_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>
 </android.support.design.widget.CoordinatorLayout>

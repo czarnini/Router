@@ -2,7 +2,7 @@ package com.bogucki.router.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +11,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.bogucki.router.R;
 import com.bogucki.router.adapters.MeetingItemTouchHelperCallback;
@@ -27,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Meeting> todayMeetings = new ArrayList<>();
@@ -109,25 +110,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     //TODO extract this to Utilis package
     private String getFormattedDate() {
         Calendar calendar = Calendar.getInstance();
-        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1); // because January is 0
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
-        return "2_1_2018";
-        //return day + "_" + month + "_" + year;
+        String day = String.format("%02d", calendar.get(Calendar.DAY_OF_MONTH));
+        String month = String.format("%02d", calendar.get(Calendar.MONTH) + 1);// because January is 0
+        String year = String.format("%02d", calendar.get(Calendar.YEAR));
+
+        return day + "_" + month + "_" + year;
     }
 
     private void handleOptimizeButton() {
-        Button optimize = findViewById(R.id.optimize_button);
+        FloatingActionButton optimize = findViewById(R.id.optimize_button);
         optimize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String key = meetingsReference.getKey();
-                DatabaseReference requests = FirebaseDatabase.getInstance().getReference().child("requests").child(key);
-                requests.setValue(true);
+
+                Map<String, Object> map = new HashMap<>();
+                for (Meeting meeting :
+                        todayMeetings) {
+                    map.put(meeting.getPushId(), meeting.toMap());
+                }
+
+                meetingsReference.updateChildren(map, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        String key = meetingsReference.getKey();
+                        DatabaseReference requests = FirebaseDatabase.getInstance().getReference().child("requests").child(key);
+                        requests.setValue(true);
+                    }
+                });
+
             }
         });
     }

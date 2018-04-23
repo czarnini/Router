@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
         final Meeting meeting = meetings.get(position);
         holder.setClient(meeting.getClient());
         holder.setAddress(meeting.getAddress());
-        holder.setReason(meeting.getReason());
+        holder.setReason(String.valueOf(meeting.getMeetingOrder()));
         holder.setDate(meeting.getEarliestTimePossible());
 
 
@@ -81,15 +82,24 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
+
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
+                int tmp = meetings.get(i).getMeetingOrder();
+                meetings.get(i).setMeetingOrder(meetings.get(i+1).getMeetingOrder());
+                meetings.get(i+1).setMeetingOrder(tmp);
                 Collections.swap(meetings, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
+                int tmp = meetings.get(i).getMeetingOrder();
+                meetings.get(i).setMeetingOrder(meetings.get(i-1).getMeetingOrder());
+                meetings.get(i-1).setMeetingOrder(tmp);
                 Collections.swap(meetings, i, i - 1);
             }
         }
+        notifyItemChanged(fromPosition);
+        notifyItemChanged(toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
