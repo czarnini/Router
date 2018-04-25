@@ -64,7 +64,6 @@ public class Meetings extends AppCompatActivity {
                 viewHolder.setClient(model.getClient());
                 viewHolder.setAddress(model.getAddress());
                 viewHolder.setReason(model.getReason());
-                viewHolder.setDate(model.getEarliestTimePossible());
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

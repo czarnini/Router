@@ -2,11 +2,10 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/greyBackground">
+    android:background="@color/greyBackground"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,107 +23,30 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 app:popupTheme="@style/PopupOverlay">
-
-
-                </android.support.v7.widget.Toolbar>
-
+            </android.support.v7.widget.Toolbar>
 
 
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:paddingTop="0dp">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/NextTarget"
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Gazopol"/>
-
-                <TextView
-                    android:id="@+id/NextAddress"
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="ul. Okopowa 35/21 01-111 Warszawa"/>
-
-                <TextView
-                    android:id="@+id/NextIssue"
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Naprawa pieca gazowego"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/NextDate"
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Początek: 15:40, za 15 minut"/>
-
-                <TextView
-                    android:id="@+id/ETA"
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Na miejscu za 10 minut"/>
-
-                <LinearLayout
-                    style="@style/nextMeetingInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/meeting_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:divider="@android:color/transparent"
-            android:dividerHeight="16.0sp"
-            android:scrollbars="none"
+            android:dividerHeight="300sp"
             android:padding="8dp"
-            android:clipToPadding="false"/>
+            android:scrollbars="none"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:backgroundTint="@color/colorAccent"
         android:id="@+id/optimize_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/colorAccent"
         app:srcCompat="@drawable/ic_add_black_24dp"/>
 </android.support.design.widget.CoordinatorLayout>

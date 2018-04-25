@@ -53,6 +53,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private String pushId;
     private int action;
     private int meetingOrder = -1;
+    private int planedTimeOfVisit = 0;
     private int defaultTextColor;
 
 
@@ -125,7 +126,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 address = addressTV.getText().toString(),
                                 reason = reasonTV.getText().toString(),
                                 date = dateTV.getText().toString().replaceAll("\\.", "_");
-                        Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder);
+                        Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder, planedTimeOfVisit);
 
                         if ( !isClientInList(client, address, clientAutocompleteArrayAdapter) || "".equals(meeting.getReason()) && !"".equals(date)) {
                             if (clientAutocompleteArrayAdapter.getPosition(new Client(client, address)) == -1) {
@@ -216,6 +217,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     }
 
     private void handleEditing(Bundle args) {
+        planedTimeOfVisit = 10000; //args.getInt(ConstantValues.MEETING_ORDER); //todo
         meetingOrder = args.getInt(ConstantValues.MEETING_ORDER);
         handleNewMeetingFromMeeting(args);
         handleNewMeetingFromClient(args);

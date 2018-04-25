@@ -2,15 +2,12 @@ package com.bogucki.router.adapters;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bogucki.router.activities.MainActivity;
 import com.bogucki.router.activities.MeetingHolder;
 import com.bogucki.router.dialogs.ChooseActionForMeeting;
 import com.bogucki.router.models.Meeting;
@@ -19,7 +16,7 @@ import com.bogucki.router.utils.ConstantValues;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.bogucki.router.R.layout.meeting_list_item;
+import static com.bogucki.router.R.layout.route_item;
 
 /**
  * Created by Michal Bogucki
@@ -39,7 +36,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
 
     @Override
     public MeetingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(meeting_list_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(route_item, parent, false);
         return new MeetingHolder(v);
     }
 
@@ -49,7 +46,8 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
         holder.setClient(meeting.getClient());
         holder.setAddress(meeting.getAddress());
         holder.setReason(String.valueOf(meeting.getMeetingOrder()));
-        holder.setDate(meeting.getEarliestTimePossible());
+        holder.setTimeWindow(meeting.getEarliestTimePossible(), meeting.getLatestTimePossible());
+        holder.setPlannedArrival(meeting.getPlanedTimeOfVisit());
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -1,9 +1,13 @@
 package com.bogucki.router.activities;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import com.bogucki.router.R;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Michał Bogucki
@@ -14,15 +18,19 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     private final TextView clientTV;
     private final TextView addressTV;
     private final TextView reasonTV;
-    private final TextView dateTV;
+    private final TextView timeWindowTV;
+    private final TextView plannedArrivalTV;
     private ItemClickListener itemClickListener;
 
     public MeetingHolder(View itemView) {
         super(itemView);
-        reasonTV  = itemView.findViewById(R.id.meeting_reason);
         clientTV  = itemView.findViewById(R.id.client_name);
         addressTV = itemView.findViewById(R.id.client_address);
-        dateTV    = itemView.findViewById(R.id.closest_term);
+        reasonTV  = itemView.findViewById(R.id.meeting_reason);
+        plannedArrivalTV = itemView.findViewById(R.id.planned_arrival);
+
+
+        timeWindowTV = itemView.findViewById(R.id.time_window);
     }
 
 
@@ -48,13 +56,25 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
         reasonTV.setText(reason);
     }
 
-    public void setDate(long date) {
-        dateTV.setText("");
+    @SuppressLint("DefaultLocale")
+    public void setTimeWindow(long latestTimePossible, long earliestTimePossible) {
+        Calendar calendarLate = Calendar.getInstance();
+        calendarLate.setTimeInMillis(latestTimePossible);
+        Calendar calendarEarly = Calendar.getInstance();
+        calendarEarly.setTimeInMillis(earliestTimePossible);
+        timeWindowTV.setText(String.format("%02d:%02d - %02d:%02d",
+                calendarEarly.get(Calendar.HOUR_OF_DAY), calendarEarly.get(Calendar.MINUTE),
+                calendarLate.get(Calendar.HOUR_OF_DAY),  calendarLate.get(Calendar.MINUTE)
+                ));
     }
 
 
-
-
-
-
+    @SuppressLint("DefaultLocale")
+    public void setPlannedArrival(long plannedArrival){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(plannedArrival);
+        plannedArrivalTV.setText(String.format("%02d:%02d",
+                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)
+        ));
+    }
 }

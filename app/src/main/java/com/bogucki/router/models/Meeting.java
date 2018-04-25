@@ -19,6 +19,7 @@ public class Meeting {
     private long earliestTimePossible;
     private long latestTimePossible;
     private int meetingOrder = -1;
+    private long planedTimeOfVisit;
 
 
     public Meeting(String pushId, String client, String address, String reason,
@@ -29,10 +30,11 @@ public class Meeting {
         this.reason = reason;
         this.earliestTimePossible = earliestTimePossible;
         this.latestTimePossible = latestTimePossible;
+        this.planedTimeOfVisit = 0;
         meetingOrder = -1;
     }
 
-    public Meeting(String pushId, String client, String address, String reason, long earliestTimePossible, long latestTimePossible, int meetingOrder) {
+    public Meeting(String pushId, String client, String address, String reason, long earliestTimePossible, long latestTimePossible, int meetingOrder, long planedTimeOfVisit) {
         this.pushId = pushId;
         this.client = client;
         this.address = address;
@@ -40,6 +42,7 @@ public class Meeting {
         this.earliestTimePossible = earliestTimePossible;
         this.latestTimePossible = latestTimePossible;
         this.meetingOrder = meetingOrder;
+        this.planedTimeOfVisit = planedTimeOfVisit;
     }
 
     public String getClient() {
@@ -86,6 +89,7 @@ public class Meeting {
 
     //Firebase real-time database needs empty constructor
     public Meeting() {
+        System.out.println("?");
     }
 
 
@@ -117,6 +121,15 @@ public class Meeting {
         result.put("earliestTimePossible", earliestTimePossible);
         result.put("latestTimePossible", latestTimePossible);
         result.put("meetingOrder",             meetingOrder);
+        result.put("planedTimeOfVisit",             planedTimeOfVisit);
         return result;
+    }
+
+    public long getPlanedTimeOfVisit() {
+        return planedTimeOfVisit;
+    }
+
+    public void setPlanedTimeOfVisit(long planedTimeOfVisit) {
+        this.planedTimeOfVisit = planedTimeOfVisit;
     }
 }
