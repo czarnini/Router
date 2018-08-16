@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/routeItem"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@drawable/back"
+              android:foreground="?selectableItemBackground"
               android:elevation="2dp"
               android:orientation="horizontal"
               android:padding="8dp">

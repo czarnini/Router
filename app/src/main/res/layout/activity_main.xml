@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/mainActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,7 +8,18 @@
     android:background="@color/greyBackground"
     android:fitsSystemWindows="true">
 
+    <TextView
+        android:id="@+id/noDataInfoView"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data_yet"
+        />
+
     <LinearLayout
+        android:id="@+id/foobar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -42,11 +54,11 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/optimize_button"
+        android:id="@+id/add_meeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_add_black_24dp"/>
+        app:srcCompat="@drawable/ic_add_white_24dp"/>
 </android.support.design.widget.CoordinatorLayout>

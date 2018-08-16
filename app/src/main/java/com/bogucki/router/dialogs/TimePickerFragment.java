@@ -22,14 +22,15 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
 
     private EditText time;
+    int hour;
+    int minute;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.d("foo", "onCreateDialog called");
         // Use the current date as the default date in the picker
         final Calendar c = Calendar.getInstance();
 
-        return new TimePickerDialog(getActivity(), this,  1, 1,true );
+        return new TimePickerDialog(getActivity(), this,  hour, minute,true );
     }
 
     @Override
@@ -39,5 +40,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     public void setView(EditText view) {
         this.time = view;
+        String[] foo = time.getText().toString().split(":");
+        hour = Integer.parseInt(foo[0]);
+        minute= Integer.parseInt(foo[1]);
     }
 }

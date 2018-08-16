@@ -26,4 +26,6 @@ public class ConstantValues {
     public static final String MEETING_ID_BUNDLE_KEY                    = "meetingID";
     public static final String MEETING_REASON_BUNDLE_KEY                = "meetingReason";
     public static final String MEETING_ORDER                            = "meetingOrder";
+    public static final String EARLIEST_TIME_BUNDLE_KEY                 ="etp";
+    public static final String LATEST_TIME_BUNDLE_KEY                   ="ltp";
 }

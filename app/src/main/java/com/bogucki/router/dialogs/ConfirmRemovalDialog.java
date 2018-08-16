@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.bogucki.router.R;
+import com.bogucki.router.adapters.MeetingsAdapter;
 import com.bogucki.router.utils.ConstantValues;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,8 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by MichałBogucki
  */
 
-public class YesNoDialog extends DialogFragment {
+public class ConfirmRemovalDialog extends DialogFragment {
 
+    private  MeetingsAdapter meetingsAdapter;
     private Bundle args;
 
     @NonNull
@@ -40,11 +42,17 @@ public class YesNoDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        meetingsAdapter.notifyDataSetChanged();
                         // Just dismiss dialog box
                     }
                 });
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+
+    public void setAdapter(MeetingsAdapter meetingsAdapter){
+        this.meetingsAdapter = meetingsAdapter;
     }
 
     private void deleteClient() {

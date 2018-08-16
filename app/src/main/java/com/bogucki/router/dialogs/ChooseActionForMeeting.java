@@ -41,7 +41,7 @@ public class ChooseActionForMeeting extends DialogFragment {
                         dialogFragment.show(getActivity().getSupportFragmentManager(), TAG);
                         break;
                     case 1: //Remove
-                        dialogFragment = new YesNoDialog();
+                        dialogFragment = new ConfirmRemovalDialog();
                         args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY,
                                 ConstantValues.REMOVE_MEETING_BUNDLE_VALUE);
                         dialogFragment.setArguments(args);

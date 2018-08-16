@@ -77,6 +77,8 @@ public class Meetings extends AppCompatActivity {
                         args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
                         args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, DBDate);
                         args.putInt(ConstantValues.MEETING_ORDER, model.getMeetingOrder());
+                        args.putLong(ConstantValues.LATEST_TIME_BUNDLE_KEY, model.getLatestTimePossible());
+                        args.putLong(ConstantValues.EARLIEST_TIME_BUNDLE_KEY, model.getEarliestTimePossible());
                         dialogFragment.setArguments(args);
                         dialogFragment.show(getSupportFragmentManager(), TAG);
                     }

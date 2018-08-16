@@ -4,16 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.AppCompatEditText;
-import android.text.Editable;
-import android.text.Selection;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,7 +18,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 
 import com.bogucki.router.R;
 import com.bogucki.router.models.Client;
@@ -54,18 +48,14 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private int action;
     private int meetingOrder = -1;
     private int planedTimeOfVisit = 0;
-    private int defaultTextColor;
 
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Log.d("foo", "onCreateDialog called ");
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final View rootView = inflater.inflate(R.layout.add_or_edit_meeting, null);
-
-
 
 
         nameTV = rootView.findViewById(R.id.client_name);
@@ -83,14 +73,13 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("New meeting", "onDataChange: Adding client");
                     clientAutocompleteArrayAdapter.add(snapshot.getValue(Client.class));
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d(this.getClass().getSimpleName(), "onCancelled: Error while fetching cliets data");
+                Log.d(this.getClass().getSimpleName(), "onCancelled: Error while fetching cliets data" + databaseError.getDetails());
             }
         });
 
@@ -110,7 +99,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         handleArgs();
 
         builder.setView(rootView);
-        builder.setMessage("Nowe spotkanie")
+        builder.setMessage(action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE ? "Edycja spotkania" : "Nowe spotkanie")
                 .setPositiveButton(R.string.save, null)
                 .setNegativeButton(R.string.cancel, null);
 
@@ -126,12 +115,25 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 address = addressTV.getText().toString(),
                                 reason = reasonTV.getText().toString(),
                                 date = dateTV.getText().toString().replaceAll("\\.", "_");
-                        Meeting meeting = new Meeting(pushId, client, address, reason, 0, 23, meetingOrder, planedTimeOfVisit);
+                        Calendar calendar = Calendar.getInstance();
 
-                        if ( !isClientInList(client, address, clientAutocompleteArrayAdapter) || "".equals(meeting.getReason()) && !"".equals(date)) {
+                        String[] dateSplit = dateTV.getText().toString().split("\\.");
+                        String[] etpSplit = etpTV.getText().toString().split(":");
+                        String[] ltpSplit = ltpTV.getText().toString().split(":");
+
+                        calendar.set(Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[0]), Integer.parseInt(etpSplit[0]), Integer.parseInt(etpSplit[1]));
+                        long earliestTimePossible = calendar.getTimeInMillis();
+
+                        calendar.set(Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]), Integer.parseInt(dateSplit[0]), Integer.parseInt(ltpSplit[0]), Integer.parseInt(ltpSplit[1]));
+                        long latestTimePossible = calendar.getTimeInMillis();
+
+
+                        Meeting meeting = new Meeting(pushId, client, address, reason, earliestTimePossible, latestTimePossible, meetingOrder, planedTimeOfVisit);
+
+                        if (!isClientInList(client, address, clientAutocompleteArrayAdapter) || "".equals(meeting.getReason()) && !"".equals(date)) {
                             if (clientAutocompleteArrayAdapter.getPosition(new Client(client, address)) == -1) {
                                 handleClientColor(getResources().getColor(R.color.colorMistake));
-                            } else{
+                            } else {
                                 handleClientColor(getResources().getColor(R.color.colorAccent));
                             }
                             if ("".equals(meeting.getReason()) && !"".equals(date)) {
@@ -140,7 +142,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                                 handleReasonColor(getResources().getColor(R.color.colorAccent));
                             }
                         } else {
-                            date = date.replaceAll("\\.","_");
+                            date = date.replaceAll("\\.", "_");
                             if (action == ConstantValues.EDIT_MEETING_BUNDLE_VALUE) {
                                 editMeeting(meeting, date);
                             } else {
@@ -155,8 +157,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         });
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        
-        
+
         dateTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,12 +218,20 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     }
 
     private void handleEditing(Bundle args) {
+
         planedTimeOfVisit = 10000; //args.getInt(ConstantValues.MEETING_ORDER); //todo
         meetingOrder = args.getInt(ConstantValues.MEETING_ORDER);
         handleNewMeetingFromMeeting(args);
         handleNewMeetingFromClient(args);
         reasonTV.setText(args.getString(ConstantValues.MEETING_REASON_BUNDLE_KEY));
         pushId = args.getString(ConstantValues.MEETING_ID_BUNDLE_KEY);
+
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(args.getLong(ConstantValues.EARLIEST_TIME_BUNDLE_KEY));
+        etpTV.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
+        calendar.setTimeInMillis(args.getLong(ConstantValues.LATEST_TIME_BUNDLE_KEY));
+        ltpTV.setText(String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
     }
 
     /**
@@ -235,7 +244,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         addressTV.setText(args.getString(ConstantValues.CLIENT_ADDRESS_BUNDLE_KEY));
         reasonTV.requestFocus();
         Calendar c = Calendar.getInstance();
-        dateTV.setText(String.format("%02d.%02d.%02d", c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH)+1,c.get(Calendar.YEAR)));
+        dateTV.setText(String.format("%02d.%02d.%02d", c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR)));
 
     }
 

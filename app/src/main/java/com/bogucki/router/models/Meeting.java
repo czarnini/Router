@@ -1,6 +1,8 @@
 package com.bogucki.router.models;
 
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
@@ -10,7 +12,7 @@ import java.util.Map;
  * Created by Michał Bogucki
  */
 
-public class Meeting {
+public class Meeting implements  Comparable{
 
     private String pushId;
     private String client;
@@ -110,18 +112,17 @@ public class Meeting {
     }
 
 
-
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("pushId",                   pushId);
-        result.put("client",                   client);
-        result.put("address",                  address);
-        result.put("reason",                   reason);
+        result.put("pushId", pushId);
+        result.put("client", client);
+        result.put("address", address);
+        result.put("reason", reason);
         result.put("earliestTimePossible", earliestTimePossible);
         result.put("latestTimePossible", latestTimePossible);
-        result.put("meetingOrder",             meetingOrder);
-        result.put("planedTimeOfVisit",             planedTimeOfVisit);
+        result.put("meetingOrder", meetingOrder);
+        result.put("planedTimeOfVisit", planedTimeOfVisit);
         return result;
     }
 
@@ -131,5 +132,15 @@ public class Meeting {
 
     public void setPlanedTimeOfVisit(long planedTimeOfVisit) {
         this.planedTimeOfVisit = planedTimeOfVisit;
+    }
+
+    @Override
+    public boolean equals(Object anotherMeeting) {
+        return anotherMeeting instanceof Meeting && this.pushId.equals(((Meeting) anotherMeeting).pushId);
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return new Integer(meetingOrder).compareTo(((Meeting) o ).getMeetingOrder());
     }
 }

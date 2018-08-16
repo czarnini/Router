@@ -2,9 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
+
     <item
-        android:icon="@drawable/ic_today_black_24dp"
+        android:id="@+id/optimize_option"
+        android:icon="@drawable/progress"
+        android:title="Wylicz trasę"
+        app:showAsAction="always"
+        android:visible="true" />
+
+
+    <item
+        android:icon="@drawable/baseline_calendar_today_white_18dp"
         android:title="Kalendarz"
+        android:orderInCategory="50"
         android:visible="true"
         android:id="@+id/meetings_option"
         app:showAsAction="always"/>
@@ -13,7 +25,7 @@
     <item
         android:id="@+id/clients_option"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_person_black_24dp"
+        android:icon="@drawable/baseline_people_white_18dp"
         android:title="Klienci"
         app:showAsAction="always"
         android:visible="true" />

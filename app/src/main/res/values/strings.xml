@@ -15,6 +15,13 @@
     <string name="reason">Powód spotkania</string>
     <string name="date">Data</string>
     <string name="ETA">Planowany przyjazd</string>
+    <string name="loading_data_snackbar">Pobieranie danych...</string>
+    <string name="no_data_yet">Brak spotkań na dziś</string>
+    <string name="error_getting_data">Błąd pobierania danych</string>
+    <string name="optimizing_started">Wyliczanie optymalnej trasy...</string>
+    <string name="optimize_new">Trasa zawiera nowe punkty, chcesz obliczyć nową trasę?</string>
+
     <array name="choose_action_for_client"> <item>Nowe spotkanie</item>  <item>Edytuj</item> <item>Usuń</item> </array>
     <array name="choose_action_for_meeting"> <item>Edytuj</item> <item>Usuń</item> </array>
+
 </resources>
