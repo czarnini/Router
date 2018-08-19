@@ -34,12 +34,16 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
     private ArrayList<Meeting> meetings;
     private FragmentManager fragmentManager;
     private DatabaseReference meetingsReference;
+    private MeetingActionListener listener;
 
-    public MeetingsAdapter(ArrayList<Meeting> meetings, FragmentManager fragmentManager, DatabaseReference meetingsReference) {
+    public MeetingsAdapter(ArrayList<Meeting> meetings, FragmentManager fragmentManager, DatabaseReference meetingsReference, MeetingActionListener listener) {
         this.meetings = meetings;
         this.fragmentManager = fragmentManager;
         this.meetingsReference = meetingsReference;
+        this.listener = listener;
     }
+
+
 
 
     @Override
@@ -111,14 +115,15 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
 
     @Override
     public void onItemDismiss(final int position) {
-        ConfirmRemovalDialog dialogFragment = new ConfirmRemovalDialog();
-        dialogFragment.setAdapter(this);
-        Bundle args = new Bundle();
-        args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY, ConstantValues.REMOVE_MEETING_BUNDLE_VALUE);
-        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, meetings.get(position).getPushId());
-        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, meetingsReference.getKey());
-        dialogFragment.setArguments(args);
-        dialogFragment.show(fragmentManager, TAG);
+//        ConfirmRemovalDialog dialogFragment = new ConfirmRemovalDialog();
+//        dialogFragment.setAdapter(this);
+//        Bundle args = new Bundle();
+//        args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY, ConstantValues.REMOVE_MEETING_BUNDLE_VALUE);
+//        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, meetings.get(position).getPushId());
+//        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, meetingsReference.getKey());
+//        dialogFragment.setArguments(args);
+//        dialogFragment.show(fragmentManager, TAG);
+        listener.onItemRemoveRequested(position);
     }
 
     @Override
@@ -136,5 +141,11 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
                 requests.setValue(true);
             }
         });
+    }
+
+
+
+    public interface MeetingActionListener{
+        void onItemRemoveRequested(final int position);
     }
 }

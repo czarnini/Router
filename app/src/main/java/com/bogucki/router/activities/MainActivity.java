@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +42,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Meeting> todayMeetings = new ArrayList<>();
+    private ArrayList<Meeting> meetingsToDelete = new ArrayList<>();
     private DatabaseReference meetingsReference;
     MeetingsAdapter mAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -122,14 +122,45 @@ public class MainActivity extends AppCompatActivity {
         meetingsReference = FirebaseDatabase.getInstance().getReference()
                 .child(ConstantValues.MEETINGS_FIREBASE)
                 .child(getFormattedDate());
-        RecyclerView todayMeetingsView = findViewById(R.id.meeting_list);
+        final RecyclerView todayMeetingsView = findViewById(R.id.meeting_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         todayMeetingsView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(todayMeetingsView.getContext(), layoutManager.getOrientation());
         dividerItemDecoration.setDrawable(getDrawable(R.drawable.divider));
         todayMeetingsView.addItemDecoration(dividerItemDecoration);
-        mAdapter = new MeetingsAdapter(todayMeetings, getSupportFragmentManager(), meetingsReference);
-        ItemTouchHelper.Callback callback = new MeetingItemTouchHelperCallback(mAdapter);
+        mAdapter = new MeetingsAdapter(todayMeetings, getSupportFragmentManager(), meetingsReference, new MeetingsAdapter.MeetingActionListener() {
+            @Override
+            public void onItemRemoveRequested(final int position) {
+                final Meeting deletedMeeting = todayMeetings.get(position);
+
+                Snackbar undo = Snackbar.make(todayMeetingsView, position == 0 ? "Zadanie zakńczone" : "Usunięto spotkanie", Snackbar.LENGTH_LONG)
+                        .setAction("COFNIJ", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                todayMeetings.add(position, deletedMeeting);
+                                meetingsToDelete.remove(deletedMeeting);
+                                mAdapter.notifyItemInserted(position);
+                            }
+                        })
+                        .addCallback(new Snackbar.Callback(){
+                            @Override
+                            public void onDismissed(Snackbar transientBottomBar, int event) {
+
+                                if(event != DISMISS_EVENT_ACTION && null != deletedMeeting.getPushId() && null != meetingsReference){
+                                    meetingsReference.child(deletedMeeting.getPushId()).removeValue();
+                                }
+
+                                super.onDismissed(transientBottomBar, event);
+                            }
+                        });
+                undo.show();
+                meetingsToDelete.add(deletedMeeting);
+                todayMeetings.remove(position);
+                mAdapter.notifyItemRemoved(position);
+            }
+        }
+        );
+        ItemTouchHelper.Callback callback = new MeetingItemTouchHelperCallback(mAdapter, this);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(todayMeetingsView);
         todayMeetingsView.setAdapter(mAdapter);

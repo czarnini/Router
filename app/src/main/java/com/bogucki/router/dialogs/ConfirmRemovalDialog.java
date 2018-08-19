@@ -73,7 +73,6 @@ public class ConfirmRemovalDialog extends DialogFragment {
         String pushId = args.getString(ConstantValues.MEETING_ID_BUNDLE_KEY);
         String date   = args.getString(ConstantValues.MEETING_DATE_BUNDLE_KEY);
         if(null != pushId && null != date){
-            Log.d("yes o no", "deleteMeeting: " +pushId);
             DatabaseReference meetingToRemove = FirebaseDatabase.getInstance()
                     .getReference()
                     .child(ConstantValues.MEETINGS_FIREBASE)
