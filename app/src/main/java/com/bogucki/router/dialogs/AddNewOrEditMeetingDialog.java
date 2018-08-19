@@ -23,6 +23,8 @@ import com.bogucki.router.R;
 import com.bogucki.router.models.Client;
 import com.bogucki.router.models.Meeting;
 import com.bogucki.router.utils.ConstantValues;
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
     private TextView reasonTV;
     private EditText etpTV;
     private EditText ltpTV;
+    private CrystalRangeSeekbar timeWindowSeekBar;
 
     private String pushId;
     private int action;
@@ -65,6 +68,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
         reasonTV = (EditText) rootView.findViewById(R.id.reason);
         etpTV = rootView.findViewById(R.id.earliest_hour);
         ltpTV = rootView.findViewById(R.id.latest_hour);
+        timeWindowSeekBar = rootView.findViewById(R.id.timeWindowsSeekBar);
 
 
         final ArrayAdapter<Client> clientAutocompleteArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.client_autocomplete);
@@ -167,25 +171,19 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
             }
         });
 
-        etpTV.setOnClickListener(new View.OnClickListener() {
+        timeWindowSeekBar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
-            public void onClick(View view) {
-                TimePickerFragment newFragment = new TimePickerFragment();
-                newFragment.setView(etpTV);
-                newFragment.show(getActivity().getFragmentManager(), "NewMeeting");
+            public void valueChanged(Number minValue, Number maxValue) {
+                etpTV.setText(convertIntToHHMMString( minValue.intValue()));
+                ltpTV.setText(convertIntToHHMMString( maxValue.intValue()));
+            }
+
+            private String convertIntToHHMMString(int intervalValue) {
+                int m = 15 * (intervalValue % 4);
+                int h = (intervalValue - intervalValue % 4) / 4 + 6;
+                return String.format("%02d", h) + ":" + String.format("%02d",m);
             }
         });
-
-
-        ltpTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimePickerFragment newFragment = new TimePickerFragment();
-                newFragment.setView(ltpTV);
-                newFragment.show(getActivity().getFragmentManager(), "NewMeeting");
-            }
-        });
-
 
         return dialog;
     }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:padding="8dp">
 
@@ -29,40 +30,53 @@
         android:hint="@string/reason"/>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
         <EditText
             android:focusable="false"
             android:inputType="date"
             android:id="@+id/date"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:hint="@string/date"/>
 
+
+
+    <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+        android:id="@+id/timeWindowsSeekBar"
+        app:min_value="0"
+        app:max_value="64"
+        app:steps="1"
+        app:bar_color="@color/colorPrimary"
+        app:bar_highlight_color="@color/colorPrimaryDark"
+        app:left_thumb_color="@color/colorPrimary"
+        app:right_thumb_color="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+
         <EditText
+            android:layout_alignParentLeft="true"
             android:focusable="false"
             android:id="@+id/earliest_hour"
             android:inputType="time"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="00:00"
             android:textAlignment="center"/>
 
         <EditText
+            android:layout_alignParentRight="true"
             android:focusable="false"
             android:inputType="time"
             android:id="@+id/latest_hour"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="23:59"
             android:textAlignment="center"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+
 
 </LinearLayout>
