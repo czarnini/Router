@@ -37,6 +37,8 @@ dependencies {
 
     compile 'com.crystal:crystalrangeseekbar:1.1.3'
 
+    compile 'com.google.android.gms:play-services-places:15.0.1'
+
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
     // Retrofit & OkHttp
     compile 'com.squareup.retrofit2:retrofit:2.3.0'

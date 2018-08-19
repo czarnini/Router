@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-    android:id="@+id/mainActivity"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/greyBackground"
@@ -10,12 +10,12 @@
 
     <TextView
         android:id="@+id/noDataInfoView"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:text="@string/no_data_yet"
+        android:visibility="gone"
         />
 
     <LinearLayout
@@ -40,7 +40,25 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <LinearLayout
+            android:id="@+id/notTodayBar"
+            android:visibility="gone"
+            android:paddingLeft="16dp"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:gravity="center"
+                android:text="Spotkania planowane na dzień 21.08.2018"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/meeting_list"

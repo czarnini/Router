@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/back"
-            android:padding="16dp"
-            android:columnCount="2"
-            android:elevation="2dp"
 
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="2dp"
+    android:orientation="vertical"
+    android:background="@drawable/back"
     >
 
+    <GridLayout
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        >
 
-    <TextView
-        android:id="@+id/future_client"
-        style="@style/future_item"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/future_client"
+            style="@style/future_item"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/future_time"
-        style="@style/future_item"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/future_time"
+            style="@style/future_item"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/future_address"
-        style="@style/future_item"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/future_reason"
-        style="@style/future_item"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/future_address"
+            style="@style/future_item"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/future_reason"
+            style="@style/future_item"
+            android:layout_height="wrap_content"/>
+    </GridLayout>
 
 
-</GridLayout>
+
+
+</LinearLayout>
+

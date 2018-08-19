@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.bogucki.router.activities.MainActivity;
 import com.bogucki.router.activities.Meetings;
 import com.bogucki.router.utils.ConstantValues;
 
@@ -39,8 +40,8 @@ public class DatePickerFragment  extends DialogFragment implements DatePickerDia
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
         if(calledFromMainActivity) {
-            Intent intent = new Intent(getContext(), Meetings.class);
-            intent.putExtra(ConstantValues.MEETING_DATE_BUNDLE_KEY, String.format("%02d.%02d.%02d", day,month+1,year));
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.putExtra("data", String.format("%02d_%02d_%02d", day,month+1,year));
             startActivity(intent);
         } else{
             time.setText(String.format("%02d.%02d.%02d", day,month+1,year));

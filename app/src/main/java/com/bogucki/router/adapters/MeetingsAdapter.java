@@ -1,5 +1,7 @@
 package com.bogucki.router.adapters;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -7,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.bogucki.router.activities.MeetingHolder;
 import com.bogucki.router.dialogs.AddNewOrEditMeetingDialog;
@@ -18,7 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +54,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
     @Override
     public MeetingHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(route_item, parent, false);
-        return new MeetingHolder(v);
+        return new MeetingHolder(v, parent.getContext());
     }
 
     @Override
@@ -60,6 +65,21 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
         holder.setReason(meeting.getReason());
         holder.setTimes(meeting.getEarliestTimePossible(), meeting.getLatestTimePossible(), meeting.getPlanedTimeOfVisit());
 
+
+        LinearLayout navBar = holder.getNavBar();
+        Calendar etp = Calendar.getInstance();
+        etp.setTimeInMillis(meeting.getEarliestTimePossible());
+        Calendar today = Calendar.getInstance();
+
+        if(position == 0 ) {
+            navBar.setVisibility(View.VISIBLE);
+            navBar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   listener.onNavRequested(meeting.getAddress());
+                }
+            });
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +94,7 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
                 args.putString(ConstantValues.FROM_MEETINGS_OR_FROM_CLIENTS_BUNDLE_KEY, ConstantValues.MEETINGS_FIREBASE);
                 args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, meetingsReference.getKey());
                 args.putInt(ConstantValues.MEETING_ORDER, meeting.getMeetingOrder());
+                args.putLong(ConstantValues.PLANED_TIME_OF_VISIT, meeting.getPlanedTimeOfVisit());
                 args.putLong(ConstantValues.LATEST_TIME_BUNDLE_KEY, meeting.getLatestTimePossible());
                 args.putLong(ConstantValues.EARLIEST_TIME_BUNDLE_KEY, meeting.getEarliestTimePossible());
                 args.putInt(ConstantValues.MEETING_ORDER, meeting.getMeetingOrder());
@@ -115,14 +136,6 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
 
     @Override
     public void onItemDismiss(final int position) {
-//        ConfirmRemovalDialog dialogFragment = new ConfirmRemovalDialog();
-//        dialogFragment.setAdapter(this);
-//        Bundle args = new Bundle();
-//        args.putInt(ConstantValues.CHOOSE_ACTION_BUNDLE_KEY, ConstantValues.REMOVE_MEETING_BUNDLE_VALUE);
-//        args.putString(ConstantValues.MEETING_ID_BUNDLE_KEY, meetings.get(position).getPushId());
-//        args.putString(ConstantValues.MEETING_DATE_BUNDLE_KEY, meetingsReference.getKey());
-//        dialogFragment.setArguments(args);
-//        dialogFragment.show(fragmentManager, TAG);
         listener.onItemRemoveRequested(position);
     }
 
@@ -147,5 +160,6 @@ public class MeetingsAdapter extends RecyclerView.Adapter<MeetingHolder> impleme
 
     public interface MeetingActionListener{
         void onItemRemoveRequested(final int position);
+        void onNavRequested(String address);
     }
 }

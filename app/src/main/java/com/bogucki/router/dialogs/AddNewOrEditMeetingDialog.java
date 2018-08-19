@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +100,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
                 reasonTV.requestFocus();
             }
         });
+
 
 
         handleArgs();
@@ -217,7 +220,7 @@ public class AddNewOrEditMeetingDialog extends DialogFragment {
 
     private void handleEditing(Bundle args) {
 
-        planedTimeOfVisit = 10000; //args.getInt(ConstantValues.MEETING_ORDER); //todo
+        planedTimeOfVisit = args.getInt(ConstantValues.PLANED_TIME_OF_VISIT);
         meetingOrder = args.getInt(ConstantValues.MEETING_ORDER);
         handleNewMeetingFromMeeting(args);
         handleNewMeetingFromClient(args);

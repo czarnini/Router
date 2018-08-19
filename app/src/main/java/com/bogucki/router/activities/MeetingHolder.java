@@ -1,7 +1,10 @@
 package com.bogucki.router.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,18 +26,22 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     private final TextView timeWindowTV;
     private final TextView plannedArrivalTV;
     private final LinearLayout routeItem;
+    private final LinearLayout navBar;
     private ItemClickListener itemClickListener;
 
-    public MeetingHolder(View itemView) {
+    public MeetingHolder(View itemView, final Context context) {
         super(itemView);
         clientTV = itemView.findViewById(R.id.client_name);
         addressTV = itemView.findViewById(R.id.client_address);
         reasonTV = itemView.findViewById(R.id.meeting_reason);
         plannedArrivalTV = itemView.findViewById(R.id.planned_arrival);
         routeItem = itemView.findViewById(R.id.routeItem);
+        navBar = itemView.findViewById(R.id.navBar);
 
 
         timeWindowTV = itemView.findViewById(R.id.time_window);
+
+
     }
 
 
@@ -59,6 +66,7 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     public void setReason(String reason) {
         reasonTV.setText(reason);
     }
+
 
     @SuppressLint("DefaultLocale")
     public void setTimes(long earliestTimePossible, long latestTimePossible, long plannedArrival) {
@@ -94,4 +102,7 @@ public class MeetingHolder extends RecyclerView.ViewHolder implements View.OnCli
     }
 
 
+    public LinearLayout getNavBar() {
+        return navBar;
+    }
 }

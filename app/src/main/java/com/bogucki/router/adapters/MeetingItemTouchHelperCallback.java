@@ -70,32 +70,33 @@ public class MeetingItemTouchHelperCallback extends ItemTouchHelper.Callback {
             View itemView = viewHolder.itemView;
             Paint p = new Paint();
             Bitmap icon;
+            Bitmap phoneIcon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.phone);
 
-            if(viewHolder.getAdapterPosition() == 0){
-                icon = BitmapFactory.decodeResource( mContext.getResources(), R.drawable.done);
-            }else{
-                icon = BitmapFactory.decodeResource( mContext.getResources(), R.drawable.delete);
+            if (viewHolder.getAdapterPosition() == 0) {
+                icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.done);
+            } else {
+                icon = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.delete);
             }
 
-            if(dX>0){
-                c.drawBitmap(icon,
+            if (dX > 0) {
+                c.drawBitmap(phoneIcon,
                         (float) itemView.getLeft() + convertDpToPx(16),
-                        (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight())/2,
+                        (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - phoneIcon.getHeight()) / 2,
                         p);
-            }
-            else {
+            } else {
                 c.drawBitmap(icon,
                         (float) itemView.getRight() - convertDpToPx(16) - icon.getWidth(),
-                        (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight())/2,
+                        (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight()) / 2,
                         p);
             }
 
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
     }
 
 
-    private int convertDpToPx(int dp){
+    private int convertDpToPx(int dp) {
         return Math.round(dp * (mContext.getResources().getDisplayMetrics().xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }

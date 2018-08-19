@@ -115,7 +115,7 @@ public class Meetings extends AppCompatActivity {
     }
 
     private void handleFloatingButton() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
